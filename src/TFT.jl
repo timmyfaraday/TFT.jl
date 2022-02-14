@@ -1,5 +1,17 @@
 module TFT
 
-# Write your package code here.
+    # import pkg
+    import DSP
+    import Polynomials
+
+    # pkg constants 
+    const _DSP = DSP
+    const _POL = Polynomials
+
+    # include
+    include("ospline.jl")
+
+    # export
+    export sample_ospline
 
 end

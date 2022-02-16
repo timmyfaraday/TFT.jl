@@ -38,9 +38,8 @@ function harmonic_state_estimator(s::Vector{<:Real}, K::Int, N::Int, H::Int, F::
     # define the appropriate range in the convolution `rC` using an offset `O`:
     # if (K+1)*N is even    → O = ((K+1)*N) / 2 + 1
     # if (K+1)*N is oneven  → O = ((K+1)*N - 1) / 2 + 1
-    # NB: the Julia DSP pkg does not allow for the keyword same in its conv-
-    # function, as is the case in MATLAB, the range `rC` mimics that 
-    # functionality.
+    # NB: the Julia DSP pkg does not allow for the keyword 'same' in its conv-
+    # function, as is the case in MATLAB, the range `rC` mimics that behavior.
     O   = floor(Int, ((K + 1) * N)) / 2 + 1 
     rC  = O:O+S-1
     

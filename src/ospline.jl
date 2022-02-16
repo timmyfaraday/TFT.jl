@@ -1,12 +1,22 @@
 """
     TFT.sample_ospline(K::Int, N::Int)
-`sample_ospline` is a function to obtain the samples the `K`th O-Spline for `N` samples per cycle
+
+Function to obtain samples of a Kth-degree o-spline and its first and second 
+derivative.
+
+input:
+- K::Int | degree of the o-spline [-]
+- N::Int | number of samples of the fundamental cycle [-]
+output
+- φ⁰::Vector{Real} | samples of the Kth-degree o-spline 
+- φ¹::Vector{Real} | samples of the first derivative of the Kth-degree o-spline
+- φ²::Vector{Real} | samples of the second derivative of the Kth-degree o-spline
 """
 function sample_ospline(K::Int, N::Int)
 
     # define the normalized time range `rU`
-    Δu  = 1 / N
-    rU  = 0.0:Δu:(1.0-Δu)
+    ΔU  = 1 / N
+    rU  = 0.0:ΔU:(1.0-ΔU)
     # define the knots range `rK`
     rK  = [-K:-1..., 1:K...]
 
@@ -27,22 +37,26 @@ function sample_ospline(K::Int, N::Int)
             end
         end
         # first derivative by Horner scheme 
-        Ψ¹  = _POL.derivative(_POL.Polynomial(cf)).coeffs
-        Φ¹[:, ctn] .*= Ψ¹[1]
+        # NB: the Julia Polynomials pkg, takes its coefficients in reverse, 
+        # hence the need for the double reserve when determining ψ¹ and ψ².
+        ψ¹  = reverse(_POL.derivative(_POL.Polynomial(reverse(cf))).coeffs)
+        Φ¹[:, ctn] .*= ψ¹[1]
         for k in 2:K
             Φ¹[:, ctn] .*= u 
-            Φ¹[:, ctn] .+= Ψ¹[k]
+            Φ¹[:, ctn] .+= ψ¹[k]
         end
         # second derivative by Horner scheme
-        Ψ²  = _POL.derivative(_POL.Polynomial(Ψ¹)).coeffs
-        Φ²[:, ctn] .*= Ψ²[1]
+        ψ²  = reverse(_POL.derivative(_POL.Polynomial(reverse(ψ¹))).coeffs)
+        Φ²[:, ctn] .*= ψ²[1]
         for k in 2:K-1
             Φ²[:, ctn] .*= u 
-            Φ²[:, ctn] .+= Ψ²[k]
+            Φ²[:, ctn] .+= ψ²[k]
         end
     end
 
-    # return the ospline sample 
-    return reshape(Φ⁰, ((K+1) * N, 1)), reshape(Φ¹, ((K+1) * N, 1)), reshape(Φ², ((K+1) * N, 1))
+    # return the samples of the o-spline and its derivatives: φ⁰, φ¹, φ²
+    return  reshape(Φ⁰, ((K+1) * N, 1)), 
+            reshape(Φ¹, ((K+1) * N, 1)), 
+            reshape(Φ², ((K+1) * N, 1))
 
 end

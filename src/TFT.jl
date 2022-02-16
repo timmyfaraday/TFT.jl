@@ -10,8 +10,10 @@ module TFT
 
     # include
     include("ospline.jl")
+    include("estimator.jl")
 
     # export
     export sample_ospline
-
+    export harmonic_state_estimator
+    
 end

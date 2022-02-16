@@ -35,16 +35,25 @@ function harmonic_state_estimator(s::Vector{<:Real}, K::Int, N::Int, H::Int, F::
     f   = φ¹ .* exp.((2 * pi * im * H) .* rU) ./ N .* F
     r   = φ² .* exp.((2 * pi * im * H) .* rU) ./ N .* F^2
 
+    # define the appropriate range in the convolution `rC` using an offset `O`:
+    # if (K+1)*N is even    → O = ((K+1)*N) / 2 + 1
+    # if (K+1)*N is oneven  → O = ((K+1)*N - 1) / 2 + 1
+    # NB: the Julia DSP pkg does not allow for the keyword same in its conv-
+    # function, as is the case in MATLAB, the range `rC` mimics that 
+    # functionality.
+    O   = floor(Int, ((K + 1) * N)) / 2 + 1 
+    rC  = O:O+S-1
+    
     # amplitude and phase estimation of the signal
-    ξ⁰  = _DSP.conv(s, h)[1:S]
+    ξ⁰  = _DSP.conv(s, h)[rC]
     ah⁰ = abs.(ξ⁰)
     ϕh⁰ = angle.(ξ⁰)
     # amplitude and phase estimation of the frequency
-    ξ¹  = _DSP.conv(s, f)[1:S] .* exp.(-im .* ϕh⁰)
+    ξ¹  = _DSP.conv(s, f)[rC] .* exp.(-im .* ϕh⁰)
     ah¹ = real.(ξ¹)
     ϕh¹ = imag.(ξ¹) ./ ah⁰
     # amplitude and phase estimation of the ROCOF
-    ξ²  = _DSP.conv(s, r)[1:S] .* exp.(-im * ϕh⁰)
+    ξ²  = _DSP.conv(s, r)[rC] .* exp.(-im * ϕh⁰)
     ah² = real.(ξ²) .+ ah⁰ .* ϕh¹.^2
     ϕh² = (imag.(ξ²) .- 2 .* ah¹ .* ϕh¹) ./ ah⁰    
 

@@ -1,5 +1,5 @@
 """
-    TFT.harmonic_state_estimator(s::Vector{<:Real}, K::Int, N::Int, h::Int, F::Real)
+    TFT.harmonic_estimator(s::Vector{<:Real}, K::Int, N::Int, h::Int, F::Real)
 
 Function to obtain the hth-harmonic amplitude and angle of a signal `s`, its 
 frequency and ROCOF (Rate Of Change Of Frequency).
@@ -18,7 +18,7 @@ output:
 - a²::Vector{Real} | amplitude of the ROCOF 
 - ϕ²::Vector{Real} | angle of the ROCOF
 """
-function harmonic_state_estimator(s::Vector{<:Real}, K::Int, N::Int, H::Int, F::Real)
+function harmonic_estimator(s::Vector{<:Real}, K::Int, N::Int, H::Int, F::Real)
 
     # define the zero-based index range of the sample `rS`
     S   = length(s)
@@ -28,9 +28,9 @@ function harmonic_state_estimator(s::Vector{<:Real}, K::Int, N::Int, H::Int, F::
     Δu  = 1 / N
     rU  = 0.0:Δu:(K + 1 - Δu)
 
-    # samples of the Kth-degree o-spline and its derivative: `φ⁰`, `φ¹`, `φ²`
+    # samples of Kth-degree o-spline and its derivative: `φ⁰`, `φ¹`, `φ²`
     φ⁰, φ¹, φ² = sample_ospline(K, N)
-    # samples of the hth-harmonic bandpass filters and its derivatives: `h`, `f`, `r`
+    # samples of hth-harmonic bandpass filter and its derivatives: `h`, `f`, `r`
     h   = φ⁰ .* exp.((2 * pi * im * H) .* rU) ./ N 
     f   = φ¹ .* exp.((2 * pi * im * H) .* rU) ./ N .* F
     r   = φ² .* exp.((2 * pi * im * H) .* rU) ./ N .* F^2
@@ -40,7 +40,7 @@ function harmonic_state_estimator(s::Vector{<:Real}, K::Int, N::Int, H::Int, F::
     # if (K+1)*N is oneven  → O = ((K+1)*N - 1) / 2 + 1
     # NB: the Julia DSP pkg does not allow for the keyword 'same' in its conv-
     # function, as is the case in MATLAB, the range `rC` mimics that behavior.
-    O   = floor(Int, ((K + 1) * N)) / 2 + 1 
+    O   = floor(Int, ((K + 1) * N) / 2) + 1 
     rC  = O:O+S-1
     
     # amplitude and phase estimation of the signal
@@ -57,7 +57,7 @@ function harmonic_state_estimator(s::Vector{<:Real}, K::Int, N::Int, H::Int, F::
     ϕh² = (imag.(ξ²) .- 2 .* ah¹ .* ϕh¹) ./ ah⁰    
 
     # return a⁰, ϕ⁰, a¹, ϕ¹, a², ϕ²
-    return  2 .* ah⁰, angle.(ξ⁰ .* exp.((-2 * pi * im / N) .* rS)), 
+    return  2 .* ah⁰, angle.(ξ⁰ .* exp.((-2 * pi * im * H / N) .* rS)), 
             ah¹, ϕh¹ ./ (2 * pi), 
             ah², ϕh² ./ (2 * pi)
 

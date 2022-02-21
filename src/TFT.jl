@@ -14,6 +14,6 @@ module TFT
 
     # export
     export sample_ospline
-    export harmonic_state_estimator
+    export harmonic_estimator
     
 end

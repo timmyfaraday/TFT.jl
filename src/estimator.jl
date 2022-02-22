@@ -54,11 +54,12 @@ function harmonic_estimator(s::Vector{<:Real}, K::Int, N::Int, H::Int, F::Real)
     # amplitude and phase estimation of the ROCOF
     ξ²  = _DSP.conv(s, r)[rC] .* exp.(-im * ϕh⁰)
     ah² = real.(ξ²) .+ ah⁰ .* ϕh¹.^2
-    ϕh² = (imag.(ξ²) .- 2 .* ah¹ .* ϕh¹) ./ ah⁰    
+    ϕh² = (imag.(ξ²) .- 2.0 .* ah¹ .* ϕh¹) ./ ah⁰
 
-    # return a⁰, ϕ⁰, a¹, ϕ¹, a², ϕ²
-    return  2 .* ah⁰, angle.(ξ⁰ .* exp.((-2 * pi * im * H / N) .* rS)), 
-            ah¹, ϕh¹ ./ (2 * pi), 
-            ah², ϕh² ./ (2 * pi)
+    # return ξ⁰, ξ¹, ξ², a⁰, ϕ⁰, a¹, ϕ¹, a², ϕ²
+    return  ξ⁰, ξ¹, ξ²,
+            2 .* ah⁰, angle.(ξ⁰ .* exp.((-2 * pi * im * H / N) .* rS)), 
+            2 .* ah¹, ϕh¹,
+            2 .* ah², ϕh²
 
 end

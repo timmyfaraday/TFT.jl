@@ -19,11 +19,11 @@ s₇  = (3.0 .- ifelse.(0.2 .<= t .<= 0.4,2.0,0.0)) .* sin.((2 * pi * F * 7) .* 
 s  = s₁ .+ s₇
 
 # get the info of the harmonic `H`
-a⁰, ϕ⁰  = Dict{Int,Vector{<:Real}}(), Dict{Int,Vector{<:Real}}()
-a¹, ϕ¹ = Dict{Int,Vector{<:Real}}(), Dict{Int,Vector{<:Real}}()
-a², ϕ² = Dict{Int,Vector{<:Real}}(), Dict{Int,Vector{<:Real}}()
+ξ⁰, a⁰, ϕ⁰  = Dict{Int,Vector{<:Complex}}(), Dict{Int,Vector{<:Real}}(), Dict{Int,Vector{<:Real}}()
+ξ¹, a¹, ϕ¹ = Dict{Int,Vector{<:Complex}}(), Dict{Int,Vector{<:Real}}(), Dict{Int,Vector{<:Real}}()
+ξ², a², ϕ² = Dict{Int,Vector{<:Complex}}(), Dict{Int,Vector{<:Real}}(), Dict{Int,Vector{<:Real}}()
 @time for h in H
-    a⁰[h], ϕ⁰[h], a¹[h], ϕ¹[h], a²[h], ϕ²[h] = harmonic_estimator(s, K, N, h, F)
+    ξ⁰[h], ξ¹[h], ξ²[h], a⁰[h], ϕ⁰[h], a¹[h], ϕ¹[h], a²[h], ϕ²[h] = harmonic_estimator(s, K, N, h, F)
 end
 
 

@@ -17,11 +17,17 @@ module TFT
     const _POL = Polynomials
 
     # include
-    include("ospline.jl")
-    include("estimator.jl")
+    include("prob/dtft.jl")
+
+    include("core/estimator.jl")
+    include("core/ospline.jl")
+    include("core/tft.jl")
 
     # export
+    export DTFTProblem, DTFTSolution
+
     export sample_ospline
     export harmonic_estimator
+    export tft
     
 end

@@ -6,30 +6,19 @@
 # See http://github.com/timmyfaraday/TFT.jl                                    #
 ################################################################################
 
-module TFT
+@testset "DTFT" begin
+    
+    @testset "Fundamental " begin 
+        A, Φ = 10
+        S(t) = A .* exp.(im .* Φ) .* exp.(im .* ω .* t)
+        
+        sol = tft(S(t), t, [1], 2)
 
-    # import pkg
-    import DSP
-    import Polynomials
+        @test amplitude(sol,0) ≈ A
+        @test amplitude(sol,1) ≈ 
+        @test amplitude(sol,2) ≈ 
 
-    # pkg constants 
-    const _DSP = DSP
-    const _POL = Polynomials
-
-    # include
-    include("prob/dtft.jl")
-
-    include("core/estimator.jl")
-    include("core/ospline.jl")
-    include("core/tft.jl")
-
-    include("util/util.jl")
-
-    # export
-    export DTFTProblem, DTFTSolution
-
-    export tft
-
-    export amplitude, angle, phasor, signal
+        @test angle(sol,0) 
+    end
 
 end

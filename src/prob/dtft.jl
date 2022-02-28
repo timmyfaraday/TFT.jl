@@ -1,5 +1,5 @@
 ################################################################################
-#  Copyright 2022, Tom Van Acker                                               #
+#  Copyright 2022, Tom Van Acker (BASF Antwerp)                                #
 ################################################################################
 # TFT.jl                                                                       #
 # A Julia package for Taylor-Fourier Transform.                                #
@@ -54,8 +54,8 @@ end
 # # additional problem constructors -- their point is to reduce any possible type of input to the base constructor input
 function build_problem(s, t, h, D, F, K)
     # checks
-    length(s) == length(t) || error("the length of the discrete signal and time are inconsistent")
-    all(diff(t) .≈ (t[2] - t[1])) || error("the discrete time is not equidistance")
+    length(s) == length(t)          || error("the length of the discrete signal and time are inconsistent")
+    all(diff(t) .≈ (t[2] - t[1]))   || error("the discrete time is not equidistance")
 
     # reduce the discrete time to a range `rT`
     # NB: the rounding function is added to avoid numerical issues
@@ -75,7 +75,7 @@ end
 """
     TFT.AbstractDTFTSolution
 
-Base for types which define discrete taylor-fourier transform solutions
+Base for types which define discrete taylor-fourier transform solutions.
 """
 abstract type AbstractDTFTSolution end
 
@@ -85,12 +85,12 @@ abstract type AbstractDTFTSolution end
 Defines a discrete taylor-fourier transform solution
 
 Fields:
-- `Ξ::Dict{<:Int,Matrix{<:Complex}}`    | xxx
+- `X::Dict{<:Int,Matrix{<:Complex}}`    | xxx
 - `prob::AbstractDTFTProblem`           | discrete taylor-fourier transform problem
 """
 struct DTFTSolution <: AbstractDTFTSolution 
     """x with degree, harmonics, t"""
-    Ξ::Dict
+    X::Dict
     """discrete taylor-fourier transform problem"""
     prob::AbstractDTFTProblem
 end

@@ -1,5 +1,5 @@
 ################################################################################
-#  Copyright 2022, Tom Van Acker                                               #
+#  Copyright 2022, Tom Van Acker (BASF Antwerp)                                #
 ################################################################################
 # TFT.jl                                                                       #
 # A Julia package for Taylor-Fourier Transform.                                #
@@ -9,6 +9,12 @@
 using TFT
 using Test
 
+f   = 50.0 
+ω   = 2 * pi * f
+t   = 0.0:0.0001:1.0
+
 @testset "TFT.jl" begin
-    # Write your tests here.
+    
+    include("prob/dtft.jl")
+
 end

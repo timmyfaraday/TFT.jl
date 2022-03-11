@@ -9,6 +9,7 @@ Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 
 [compat]
 DSP = "0.7"
+Polynomials = "3"
 julia = "1"
 
 [extras]

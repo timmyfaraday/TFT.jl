@@ -42,3 +42,21 @@ function harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
     # return the up-to-Dth-degree derivative of the H-th harmonic complex envelope
     return _DSP.conv(prob.s, Y)[rC, :]  
 end
+
+"""
+    TFT.fast_harmonic_estimator(prob::TFT.AbstractDTFTProblem, H::Int)
+
+Function to obtain the up-to-Dth-degree derivative of the Hth-harmonic complex
+envelope.
+
+Input:
+- `prob::AbstractDTFTProblem`   | DTFT problem struct
+- `H::Int`                      | harmonic number [-]
+
+Output:
+- `X::Matrix{<:Complex}`        | up-to-Dth-degree derivative of the 
+                                | Hth-harmonic complex envelope
+"""
+function fast_harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
+    # this is where the magic happens
+end

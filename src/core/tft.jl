@@ -10,10 +10,10 @@
     TFT.tft(prob::AbstractDTFTProblem)
 
 Input:
-- `prob::AbstractDTFTProblem`   | yyy
+- `prob::AbstractDTFTProblem`   | DTFT problem struct
 
 Output:
-- `sol::AbstractDTFTSolution`   | xxx
+- `sol::AbstractDTFTSolution`   | DTFT solution struct
 """
 tft(prob::AbstractDTFTProblem) =
     DTFTSolution(Dict(nh => harmonic_estimator(prob, nh) for nh in prob.h), prob)
@@ -30,9 +30,7 @@ Input:
 - `K::Int`              | degree of the o-spline [-]
 
 Output:
-- `sol::DTFTSolution`   | xxx
+- `sol::DTFTSolution`   | DTFT solution struct
 """
 tft(s::Vector{<:Real}, t::Vector{<:Real}, h::Vector{<:Int}, D::Int, F::Real, K::Int) =
     tft(build_problem(s, t, h, D, F, K))
-
-

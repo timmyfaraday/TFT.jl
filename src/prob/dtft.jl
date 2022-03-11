@@ -51,7 +51,7 @@ struct DTFTProblem <: AbstractDTFTProblem
         new(s, t, h, D, F, K, N)
 end
 
-# # additional problem constructors -- their point is to reduce any possible type of input to the base constructor input
+# problem builder
 function build_problem(s, t, h, D, F, K)
     # checks
     length(s) == length(t)          || error("the length of the discrete signal and time are inconsistent")
@@ -85,12 +85,12 @@ abstract type AbstractDTFTSolution end
 Defines a discrete taylor-fourier transform solution
 
 Fields:
-- `X::Dict{<:Int,Matrix{<:Complex}}`    | xxx
-- `prob::AbstractDTFTProblem`           | discrete taylor-fourier transform problem
+- `X::Dict{<:Int,Matrix{<:Complex}}`    | dictionary of complex envelopes ξₕ⁽ᴰ⁾
+- `prob::TFT.AbstractDTFTProblem`       | DTFT problem struct
 """
 struct DTFTSolution <: AbstractDTFTSolution 
-    """x with degree, harmonics, t"""
+    """dictionary of complex envelopes ξₕ⁽ᴰ⁾"""
     X::Dict
-    """discrete taylor-fourier transform problem"""
+    """DTFT problem struct"""
     prob::AbstractDTFTProblem
 end

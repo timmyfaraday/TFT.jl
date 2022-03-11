@@ -30,6 +30,6 @@ module TFT
 
     export tft
 
-    export amplitude, angle, phasor, signal
+    export amplitude, angle, frequency, rocof, phasor, signal, overall_signal, error
 
 end

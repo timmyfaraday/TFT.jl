@@ -9,15 +9,16 @@
 """
     TFT.harmonic_estimator(s::Vector{<:Real}, D::Int, F::Real, H::Int, K::Int, N::Int)
 
-Function to obtain the up-to-Dth-degree derivative of the Hth-harmonic xxx.
+Function to obtain the up-to-Dth-degree derivative of the Hth-harmonic complex
+envelope.
 
 Input:
-- `prob::AbstractDTFTProblem`   | xxx
+- `prob::AbstractDTFTProblem`   | DTFT problem struct
 - `H::Int`                      | harmonic number [-]
 
 Output:
-- `Ξ::Matrix{<:Complex}`| samples of the up-to-Dth-degree derivative of the
-                          Hth-harmonic xxx
+- `X::Matrix{<:Complex}`        | up-to-Dth-degree derivative of the 
+                                | Hth-harmonic complex envelope
 """
 function harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
     # define the extended normalized time range `rU`
@@ -38,6 +39,6 @@ function harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
     O   = floor(Int, ((prob.K + 1) * prob.N) / 2) + 1 
     rC  = O:O+length(prob.s)-1
     
-    # return the up-to-Dth-degree derivative of the H-th harmonic Ξ
+    # return the up-to-Dth-degree derivative of the H-th harmonic complex envelope
     return _DSP.conv(prob.s, Y)[rC, :]  
 end

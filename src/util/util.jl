@@ -8,12 +8,12 @@
 
 # checks
 function check_sol(sol, D)
-    sol.prob.D >= D || error("the required Dth-degree derivative is unavailable")
+    sol.prob.D >= D || Base.error("the required Dth-degree derivative is unavailable")
 end
 
 function check_sol(sol, D, H)
-    sol.prob.D >= D || error("the required Dth-degree derivative is unavailable")
-    H in sol.prob.h || error("the required Hth-harmonic phasor is unavailable")
+    sol.prob.D >= D || Base.error("the required Dth-degree derivative is unavailable")
+    H in sol.prob.h || Base.error("the required Hth-harmonic phasor is unavailable")
 end
 
 # amplitude
@@ -49,9 +49,9 @@ Output:
 function amplitude(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
     check_sol(sol, D, H)
 
-    D == 0 && return abs.(phasor(sol,D,H))
-    D == 1 && return real.(phasor(sol,D,H) .* exp.(-im .* ϕ(sol,H)))
-    D == 2 && return real.(phasor(sol,D,H) .* exp.(-im .* ϕ(sol,H))) .+ 
+    D == 0 && return abs.(ξ(sol,D,H))
+    D == 1 && return real.(ξ(sol,D,H) .* exp.(-im .* ϕ(sol,H)))
+    D == 2 && return real.(ξ(sol,D,H) .* exp.(-im .* ϕ(sol,H))) .+ 
                         a(sol,0,H) .* φ(sol,1,H).^2
     
     return nothing
@@ -94,9 +94,9 @@ function angle(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
     rS  = 0:(length(sol.prob.s)-1)
     ar  = exp.((-2.0 * pi * im * H / sol.prob.N) .* rS)
 
-    D == 0 && return Base.angle.(phasor(sol,D,H) .* ar) 
-    D == 1 && return imag.(phasor(sol,D,H) .* exp.(-im .* ϕ(sol,H))) ./ a(sol,0,H)
-    D == 2 && return (imag.(phasor(sol,D,H) .* exp.(-im .* ϕ(sol,H))) .- 
+    D == 0 && return Base.angle.(ξ(sol,D,H) .* ar) 
+    D == 1 && return imag.(ξ(sol,D,H) .* exp.(-im .* ϕ(sol,H))) ./ a(sol,0,H)
+    D == 2 && return (imag.(ξ(sol,D,H) .* exp.(-im .* ϕ(sol,H))) .- 
                         2.0 .* a(sol,1,H) .* φ(sol,1,H)
                      ) ./ a(sol,0,H)
     
@@ -131,7 +131,7 @@ Output:
 - `ϕ::Vector{<:Real}`           | rotating angle [(rad)]
 """
 rotating_angle(sol::AbstractDTFTSolution, H::Int=1) =
-    Base.angle.(phasor(sol,0,H))
+    Base.angle.(ξ(sol,0,H))
 
 # frequency
 """
@@ -172,6 +172,12 @@ Output:
 """
 rocof(sol::AbstractDTFTSolution, H::Int=1) = φ(sol,2,H) / (2 * pi)^2
 
+# complex_envelope
+"""
+    TFT.ξ(TFT.AbstractDFTFSolution, D::Int=0, H::Int=1)
+"""
+ξ(sol::AbstractDTFTSolution, D::Int=0, H::Int=1) = 2.0 .* sol.X[H][:,D+1]
+
 # phasor
 """
     TFT.phasor(TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
@@ -193,7 +199,14 @@ Output:
 function phasor(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
     check_sol(sol, D, H)
 
-    return 2.0 .* sol.X[H][:,D+1]
+    D == 0 && return a(sol,0,H) .* exp.(im .* φ(sol,0,H))
+    D == 1 && return (a(sol,1,H) .+ im .* φ(sol,1,H) .* a(sol,0,H)
+                     ) .* exp.(im .* φ(sol,0,H))
+    D == 2 && return ((a(sol,2,H) .- φ(sol,1,H).^2 .* a(sol,0,H)) .+
+                      im .* (2.0 .* φ(sol,1,H) .* a(sol,1,H) .+ φ(sol,2,H) .* a(sol,0,H))
+                     ) .* exp.(im .* φ(sol,0,H))
+
+    return nothing
 end
 
 # signal

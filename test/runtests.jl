@@ -19,8 +19,8 @@ K   = 9
 
 # discrete time
 t   = 0.0:0.0001:1.0
-tm  = 0.5
-idm = findfirst(x -> x == 0.5, t)
+tm  = 0.5036
+idm = findfirst(x -> x == tm, t)
 
 # tolerances
 atol = 1e-6

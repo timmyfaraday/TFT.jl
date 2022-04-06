@@ -7,6 +7,8 @@ makedocs(
     sitename    = "TFT.jl",
     authors     = "Tom Van Acker",
     pages       = [ "Home"              => "index.md",
+                    "Developer"         =>
+                         ["Mathematical Background"    => "math.md"]
                   ]
 )
 

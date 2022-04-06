@@ -26,10 +26,12 @@ module TFT
     include("util/util.jl")
 
     # export
-    export DTFTProblem, DTFTSolution
+    export  DTFTProblem, DTFTSolution
 
-    export tft
+    export  tft
 
-    export amplitude, angle, frequency, rocof, phasor, signal, overall_signal, error
+    export  amplitude, phase, ar_phase, frequency, rocof, phasor, ar_phasor, 
+            signal, error
+    export  a, ϕ, φ, ξ, ψ
 
 end

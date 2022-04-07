@@ -64,7 +64,7 @@ of the Hth-harmonic phasor, dispatching to `phase(sol, D, H)`.
 ϕ(sol::AbstractDTFTSolution, D::Int=0, H::Int=1) = phase(sol, D, H)
 
 """
-    TFT.phase(TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
+    TFT.phase(sol::TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
 
 Function to obtain the alternative angle of the Dth-degree derivative of the 
 Hth-harmonic phasor.
@@ -99,7 +99,7 @@ derivative of the Hth-harmonic phasor, dispatching to `angle(sol,D,H)`.
 φ(sol::AbstractDTFTSolution, D::Int=0, H::Int=1) = ar_phase(sol,D,H)
 
 """
-    TFT.ar_phase(TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
+    TFT.ar_phase(sol::TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
 
 Function to obtain the anti-rotating phase of the Dth-degree derivative of the 
 Hth-harmonic phasor.

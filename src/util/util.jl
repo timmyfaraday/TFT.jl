@@ -120,11 +120,7 @@ Output:
 - `φ::Vector{<:Real}`           | anti-rotating phase φₕ⁽ᴰ⁾(t) [(rad)]
 """
 function ar_phase(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
-    # anti-rotating cte
-    rS  = 0:(length(sol.prob.s)-1)
-    ar  = exp.((-2.0 * pi * im * H / sol.prob.N) .* rS)
-
-    D == 0 && return Base.angle.(ξ(sol,D,H) .* ar) 
+    D == 0 && return Base.angle.(ψ(sol,D,H)) 
     # D == 1 && return imag.(ξ(sol,D,H) .* exp.(-im .* ϕ(sol,H))) ./ a(sol,0,H)
     # D == 2 && return (imag.(ξ(sol,D,H) .* exp.(-im .* ϕ(sol,H))) .- 
     #                     2.0 .* a(sol,1,H) .* φ(sol,1,H)
@@ -174,7 +170,7 @@ end
 
 # dynamic phasor
 """
-    TFT.ξ(TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
+    TFT.ξ(sol::TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
 
 Shorthand function to obtain the Dth-degree derivative of the Hth-harmonic 
 dynamic phasor, dispatching to `phasor(sol,D,H)`.
@@ -182,7 +178,7 @@ dynamic phasor, dispatching to `phasor(sol,D,H)`.
 ξ(sol::AbstractDTFTSolution, D::Int=0, H::Int=1) = phasor(sol,D,H)
 
 """
-    TFT.phasor(TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
+    TFT.phasor(sol::TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
 
 Function to obtain the D-th-degree derivative of the Hth-harmonic dynamic 
 phasor.
@@ -203,7 +199,7 @@ end
 
 # anti-rotating dynamic phasor
 """
-    TFT.ψ(TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
+    TFT.ψ(sol::TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
 
 Shorthand function to obtain the Dth-degree derivative of the Hth-harmonic anti-
 rotating dynamic phasor, dispatching to `ar_phasor(sol,D,H)`.
@@ -212,7 +208,7 @@ rotating dynamic phasor, dispatching to `ar_phasor(sol,D,H)`.
     ar_phasor(sol,D,H)
 
 """
-    TFT.ar_phasor(TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
+    TFT.ar_phasor(sol::TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
 
 Function to obtain the D-th-degree derivative of the Hth-harmonic anti-rotating 
 dynamic phasor.
@@ -232,7 +228,7 @@ ar_phasor(sol::AbstractDTFTSolution, D::Int=0, H::Int=1) =
 
 # signal
 """
-    TFT.signal(TFT.AbstractDTFTSolution)
+    TFT.signal(sol::TFT.AbstractDTFTSolution)
 
 Function to obtain the overall signal.
 
@@ -248,7 +244,7 @@ signal(sol::AbstractDTFTSolution) =
     sum(real(ξ(sol,0,nh) + conj(ξ(sol,0,nh))) for nh in sol.prob.h)
 
 """
-    TFT.signal(TFT.AbstractDTFTSolution, H::Int)
+    TFT.signal(sol::TFT.AbstractDTFTSolution, H::Int)
 
 Function to obtain the Hth-harmonic signal. 
 

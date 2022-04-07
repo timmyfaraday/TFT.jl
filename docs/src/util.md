@@ -3,18 +3,6 @@
 A number of functions are made available to the user to retrieve specific
 components of the TFT solution
 
-## Quick Links
-
-- [Utilities](#utilities)
-  - [Quick Links](#quick-links)
-  - [Amplitude](#amplitude)
-  - [Phase](#phase)
-  - [Anti-Rotating Phase](#anti-rotating-phase)
-  - [Dynamic Phasor](#dynamic-phasor)
-  - [Anti-Rotating Dynamic Phasor](#anti-rotating-dynamic-phasor)
-  - [Signal](#signal)
-  - [Error](#error)
-
 ## Amplitude
 
 ```@docs

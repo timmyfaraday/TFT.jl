@@ -6,8 +6,13 @@
 # See http://github.com/timmyfaraday/TFT.jl                                    #
 ################################################################################
 
-using TFT
+# using pkgs
+using ForwardDiff
 using Test
+using TFT
+
+# pkg constants
+const _FD = ForwardDiff
 
 # fundamental frequency and angular frequency
 F   = 50.0 

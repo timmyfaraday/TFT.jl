@@ -25,6 +25,8 @@
 The Taylor-Fourier Transform function `tft()` gives the up-to-Dth derivative of 
 the hth-harmonic dynamic phasors `ξₕ⁽ᵈ⁾(t), ∀ d ∈ {0,..,D}, h ∈ H`. 
 
+### Zeroth Derivative
+
 The zeroth derivative of the hth-harmonic dynamic phasor `ξₕ⁽⁰⁾(t)` is given by,
 ```math
 \begin{aligned}
@@ -41,7 +43,7 @@ The zeroth derivative of the amplitude `aₕ⁽⁰⁾(t)`, phase `ϕₕ⁽⁰⁾
 phase `φₕ⁽⁰⁾(t)` are, respectively,
 ```math
 \begin{aligned}
-    a^{(0)}_{h}(t)          =& 2 \cdot |\xi^{(0)}_{h}(t)| \\
+    a^{(0)}_{h}(t)          =& |2 \, \xi^{(0)}_{h}(t)| \\
     \phi^{(0)}_{h}(t)       =& \angle \big( \xi^{(0)}_{h}(t) \big) \\
     \varphi^{(0)}_{h}(t)    =& \angle \big( \xi^{(0)}_{h}(t) \, \exp(-j \omega_{h} t) \big) = \angle \big( \psi^{(0)}_{h}(t) \big) = \phi^{(0)}_{h}(t) - \omega_{h}t
 \end{aligned}
@@ -56,6 +58,8 @@ are, respectively,
 ```
 where `conj(ξₕ⁽⁰⁾(t))` denotes the complex conjugate of the zeroth derivative of the 
 hth-harmonic dynamic phasor.
+
+### First Derivative
 
 The first derivate of the hth-harmonic dynamic phasor `ξₕ⁽¹⁾(t)` is given by,
 ```math
@@ -72,27 +76,20 @@ The first derivative of the hth-harmomic anti-rotating dynamic phasor `ψₕ⁽�
 is,
 ```math 
 \begin{aligned}
-    \psi_{h}^{(1)}(t)       =&  \big(\xi_{h}^{(1)}(t) - j \omega_{h} 
+    \psi_{h}^{(1)}(t)       =&  \frac{\mathrm{d}\psi_{h}^{(0)}(t)}{\mathrm{d}t} \\
+                            =&  \frac{\mathrm{d}\big(\xi_{h}^{(0)}(t) 
+                                \exp(-j \omega_{h} t)\big)}{\mathrm{d}t} \\
+                            =&  \big(\xi_{h}^{(1)}(t) - j \omega_{h}
                                 \xi_{h}^{(0)}(t) \big) \exp(-j \omega_{h} t)
 \end{aligned}
 ```
-
-!!! note
-    The amplitude `aₕ⁽¹⁾(t)` denotes the first derivate of the amplitude of the 
-    zeroth derivative of the dynamic phasor `ξₕ⁽⁰⁾(t)`, not the amplitude of the first 
-    derivative of the dynamic phasor `ξₕ⁽¹⁾(t)`.
-
-!!! note
-    The phase `ϕₕ⁽¹⁾(t)` denotes the first derivate of the phase of the 
-    zeroth derivative of the dynamic phasor `ξₕ⁽⁰⁾(t)`, not the phase of the first 
-    derivative of the dynamic phasor `ξₕ⁽¹⁾(t)`.
 
 The first derivative of the hth-harmonic amplitude `aₕ⁽¹⁾(t)`, phase `ϕₕ⁽¹⁾(t)` and
 anti-rotating phase `φₕ⁽¹⁾(t)` are, respectively,
 ```math
 \begin{aligned}
-    a_{h}^{(1)}(t)          =& ℜ[2 \cdot \xi_{h}^{(1)}(t)] \\
-    \phi_{h}^{(1)}(t)       =& \frac{ℑ[2 \cdot \xi_{h}^{(1)}(t)]}{a^{(0)}_{h}(t)} \\
+    a_{h}^{(1)}(t)          =& ℜ[2 \, \xi_{h}^{(1)}(t) \, \exp(-j \phi_{h}^{(0)}(t))] \\
+    \phi_{h}^{(1)}(t)       =& \frac{ℑ[2 \, \xi_{h}^{(1)}(t) \, \exp(-j \phi_{h}^{(0)}(t))]}{a^{(0)}_{h}(t)} \\
     \varphi_{h}^{(1)}(t)    =& \phi_{h}^{(1)}(t) - \omega_{h}
 \end{aligned}
 ```

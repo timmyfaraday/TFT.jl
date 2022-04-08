@@ -10,7 +10,7 @@
     
     @testset "Fundamental Periodic Signal" begin 
         # input
-        A(t)    = 10.0
+        A(t)    = 10.0 
         Φ(t)    = pi / 2
 
         # derived input
@@ -24,6 +24,7 @@
 
         # tests
         @test isapprox(TFT.a(sol,0,1)[idm], A(tm), atol=atol)
+        @test isapprox(TFT.a(sol,1,1)[idm], _FD.gradient(A,tm), atol=atol)
         @test isapprox(TFT.φ(sol,0,1)[idm], Φ(tm), atol=atol)
         @test isapprox(TFT.ξ(sol,0,1)[idm], Ξ(tm), atol=atol)
         @test isapprox(TFT.ψ(sol,0,1)[idm], Ψ(tm), atol=atol)

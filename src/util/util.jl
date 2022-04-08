@@ -30,8 +30,8 @@ a(sol::AbstractDTFTSolution, D::Int=0, H::Int=1) = amplitude(sol,D,H)
 Function to obtain the amplitude of the Dth-degree derivative of the 
 Hth-harmonic phasor.
 
-    aₕ⁽⁰⁾(t) = 2 ⋅ |ξₕ⁽⁰⁾(t)|
-    # aₕ⁽¹⁾(t) = 2 ⋅ ℜ[ξₕ⁽¹⁾(t) ⋅ exp(-im ⋅ ϕₕ⁽⁰⁾(t))] 
+    aₕ⁽⁰⁾(t) = |2 ⋅ ξₕ⁽⁰⁾(t)|
+    aₕ⁽¹⁾(t) = ℜ[2 ⋅ ξₕ⁽¹⁾(t) ⋅ exp(-im ⋅ ϕₕ⁽⁰⁾(t))] 
     # aₕ⁽²⁾(t) = 2 ⋅ ℜ[ξₕ⁽²⁾(t) ⋅ exp(-im ⋅ ϕₕ⁽⁰⁾(t))] + aₕ⁽⁰⁾(t) ⋅ φₕ⁽¹⁾(t)^2
 
 See: [Assessing Synchrophasor Estimates of an Event Captured by a Phasor 
@@ -46,8 +46,8 @@ Output:
 - `a::Vector{<:Real}`           | amplitude aₕ⁽ᴰ⁾(t) [?]
 """
 function amplitude(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
-    D == 0 && return 2.0 .* abs.(ξ(sol,D,H))
-    # D == 1 && return 2.0 .* real.(ξ(sol,D,H) .* exp.(-im .* ϕ(sol,H)))
+    D == 0 && return abs.(2.0 .* ξ(sol,D,H))
+    D == 1 && return real.(2.0 .*  ξ(sol,D,H) .* exp.(-im .* ϕ(sol,H)))
     # D == 2 && return 2.0 .* real.(ξ(sol,D,H) .* exp.(-im .* ϕ(sol,H))) .+ 
     #                    a(sol,0,H) .* φ(sol,1,H).^2
     

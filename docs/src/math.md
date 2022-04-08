@@ -37,17 +37,17 @@ The zeroth derivative of the hth-harmonic dynamic phasor `ξₕ⁽⁰⁾(t)` is 
 where `ψₕ⁽⁰⁾(t)` denotes the anti-rotating zeroth derivative of the hth-harmonic 
 dynamic phasor. 
 
-The corresponding amplitude `aₕ⁽⁰⁾(t)`, phase `ϕₕ⁽⁰⁾(t)` and anti-rotating phase 
-`φₕ⁽⁰⁾(t)` are, respectively,
+The zeroth derivative of the amplitude `aₕ⁽⁰⁾(t)`, phase `ϕₕ⁽⁰⁾(t)` and anti-rotating 
+phase `φₕ⁽⁰⁾(t)` are, respectively,
 ```math
 \begin{aligned}
     a^{(0)}_{h}(t)          =& 2 \cdot |\xi^{(0)}_{h}(t)| \\
     \phi^{(0)}_{h}(t)       =& \angle \big( \xi^{(0)}_{h}(t) \big) \\
-    \varphi^{(0)}_{h}(t)    =& \angle \big( \xi^{(0)}_{h}(t) \, \exp(-j \omega_{h} t) \big) = \angle \big( \psi^{(0)}_{h}(t) \big)
+    \varphi^{(0)}_{h}(t)    =& \angle \big( \xi^{(0)}_{h}(t) \, \exp(-j \omega_{h} t) \big) = \angle \big( \psi^{(0)}_{h}(t) \big) = \phi^{(0)}_{h}(t) - \omega_{h}t
 \end{aligned}
 ```
-The corresponding hth-harmonic signal `sₕ⁽⁰⁾(t)` and overall signal `s⁽⁰⁾(t)` are, 
-respectively,
+The zeroth derivative hth-harmonic signal `sₕ⁽⁰⁾(t)` and overall signal `s⁽⁰⁾(t)` 
+are, respectively,
 ```math
 \begin{aligned}
     s^{(0)}_{h}(t)          =& \xi^{(0)}_{h}(t) + \text{conj}\big( \xi^{(0)}_{h}(t) \big) \\
@@ -56,3 +56,50 @@ respectively,
 ```
 where `conj(ξₕ⁽⁰⁾(t))` denotes the complex conjugate of the zeroth derivative of the 
 hth-harmonic dynamic phasor.
+
+The first derivate of the hth-harmonic dynamic phasor `ξₕ⁽¹⁾(t)` is given by,
+```math
+\begin{aligned}
+    \xi_{h}^{(1)}(t)        =&  \frac{\mathrm{d}\xi_{h}^{(0)}(t)}{\mathrm{d}t} \\
+                            =&  \frac{1}{2} \big( a^{(1)}_{h}(t) +
+                                j \, \phi^{(1)}_{h}(t) \, a^{(0)}_{h}(t)) \big)
+                                \, \exp(j \phi^{(0)}_{h}(t))
+
+\end{aligned}
+```
+
+The first derivative of the hth-harmomic anti-rotating dynamic phasor `ψₕ⁽¹⁾(t)`
+is,
+```math 
+\begin{aligned}
+    \psi_{h}^{(1)}(t)       =&  \big(\xi_{h}^{(1)}(t) - j \omega_{h} 
+                                \xi_{h}^{(0)}(t) \big) \exp(-j \omega_{h} t)
+\end{aligned}
+```
+
+!!! note
+    The amplitude `aₕ⁽¹⁾(t)` denotes the first derivate of the amplitude of the 
+    zeroth derivative of the dynamic phasor `ξₕ⁽⁰⁾(t)`, not the amplitude of the first 
+    derivative of the dynamic phasor `ξₕ⁽¹⁾(t)`.
+
+!!! note
+    The phase `ϕₕ⁽¹⁾(t)` denotes the first derivate of the phase of the 
+    zeroth derivative of the dynamic phasor `ξₕ⁽⁰⁾(t)`, not the phase of the first 
+    derivative of the dynamic phasor `ξₕ⁽¹⁾(t)`.
+
+The first derivative of the hth-harmonic amplitude `aₕ⁽¹⁾(t)`, phase `ϕₕ⁽¹⁾(t)` and
+anti-rotating phase `φₕ⁽¹⁾(t)` are, respectively,
+```math
+\begin{aligned}
+    a_{h}^{(1)}(t)          =& ℜ[2 \cdot \xi_{h}^{(1)}(t)] \\
+    \phi_{h}^{(1)}(t)       =& \frac{ℑ[2 \cdot \xi_{h}^{(1)}(t)]}{a^{(0)}_{h}(t)} \\
+    \varphi_{h}^{(1)}(t)    =& \phi_{h}^{(1)}(t) - \omega_{h}
+\end{aligned}
+```
+
+The frequency `fₕ(t)` of the zeroth derivative hth-harmonic signal `sₕ⁽⁰⁾(t)` is,
+```math
+\begin{aligned}
+    f_{h}(t)                =& TODO
+\end{aligned}
+```

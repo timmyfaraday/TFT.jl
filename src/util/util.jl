@@ -145,7 +145,7 @@ Input:
 - `H::Int`                      | harmonic number [-], default=1
 
 Output:
-- phasor::Vector{<:Complex}     | dynamic phasor ξₕ⁽ᴰ⁾(t) ∈ 𝐂 [?]
+- `ξ::Vector{<:Complex}`        | dynamic phasor ξₕ⁽ᴰ⁾(t) ∈ 𝐂 [?]
 """
 function phasor(sol::AbstractDTFTSolution, D::Int=0, H::Int=1) 
     check_sol(sol, D, H)
@@ -178,7 +178,7 @@ Input:
 - `H::Int`                      | harmonic number [-], default=1
 
 Output:
-- ar_phasor::Vector{<:Complex}  | anti-rotating dynamic phasor ψₕ⁽ᴰ⁾(t) ∈ 𝐂 [?]
+- `ψ::Vector{<:Complex}`        | anti-rotating dynamic phasor ψₕ⁽ᴰ⁾(t) ∈ 𝐂 [?]
 """
 function ar_phasor(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
     D == 0 && return ξ(sol,0,H) .* exp.(-im .* ω(sol,H) .* sol.prob.t)
@@ -198,7 +198,7 @@ Input:
 - `sol::AbstractDTFTSolution`   | DTFT solution struct [-]
             
 Output:
-- `signal::Vector{<:Real}`      | signal s(t) ∈ 𝐑 [?]
+- `s::Vector{<:Real}`           | signal s(t) ∈ 𝐑 [?]
 """
 signal(sol::AbstractDTFTSolution) = 
     sum(real(ξ(sol,0,nh) + conj(ξ(sol,0,nh))) for nh in sol.prob.h)
@@ -215,7 +215,7 @@ Input:
 - `H::Int`                      | harmonic number [-]
         
 Output:
-- `signal::Vector{<:Real}`      | signal sₕ(t) ∈ 𝐑 [?]
+- `s::Vector{<:Real}`           | signal sₕ(t) ∈ 𝐑 [?]
 """
 signal(sol::AbstractDTFTSolution, H::Int) =
     real(ξ(sol,0,H) + conj(ξ(sol,0,H)))

@@ -9,8 +9,8 @@
 """
     TFT.harmonic_estimator(s::Vector{<:Real}, D::Int, F::Real, H::Int, K::Int, N::Int)
 
-Function to obtain the up-to-Dth-degree derivative of the Hth-harmonic complex
-envelope.
+Function to obtain the up-to-Dth-degree derivative of the Hth-harmonic dynamic 
+phasor.
 
 Input:
 - `prob::AbstractDTFTProblem`   | DTFT problem struct
@@ -18,7 +18,7 @@ Input:
 
 Output:
 - `X::Matrix{<:Complex}`        | up-to-Dth-degree derivative of the 
-                                | Hth-harmonic complex envelope
+                                | Hth-harmonic dynamic phasor
 """
 function harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
     # define the extended normalized time range `rU`
@@ -29,7 +29,8 @@ function harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
     Φ   = sample_ospline(prob.D, prob.K, prob.N)
     # update `Φ` to reflect the samples of up-to-Dth-degree derivative of the 
     # Hth-harmonic bandpass filter
-    Y   = Φ .* exp.((2 * pi * im * H) .* rU) .* prob.F.^collect(0:prob.D)' ./ prob.N
+    Y   = Φ .* exp.((2 * pi * im * H) .* rU) .* prob.F.^collect(0:prob.D)' ./ 
+            prob.N
 
     # define the appropriate range in the convolution `rC` using an offset `O`:
     # if (K+1)*N is even    → O = ((K+1)*N) / 2 + 1
@@ -39,6 +40,6 @@ function harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
     O   = floor(Int, ((prob.K + 1) * prob.N) / 2) + 1 
     rC  = O:O+length(prob.s)-1
     
-    # return the up-to-Dth-degree derivative of the H-th harmonic complex envelope
+    # return the up-to-Dth-degree derivative of the H-th harmonic dynamic phasor
     return _DSP.conv(prob.s, Y)[rC, :]  
 end

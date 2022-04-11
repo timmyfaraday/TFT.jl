@@ -2,18 +2,18 @@
 
 ## Nomenclature
 
-| Symbol    | Description                   |
-|:----------|:------------------------------|
-| `s`       | signal                        |
-| `a`       | amplitude                     |
-| `ϕ`       | phase [(rad)]                 |
-| `φ`       | anti-rotating phase [(rad)]   |
-| `ξ`       | dynamic phasor                |
-| `ψ`       | anti-rotating dynamic phasor  | 
+| Symbol    | Description                   | Domain    |
+|:----------|:------------------------------|:----------|
+| `s`       | signal                        | 𝐑         |
+| `a`       | amplitude                     | 𝐑⁺        |
+| `ϕ`       | phase [(rad)]                 | [-π,π]    |
+| `φ`       | anti-rotating phase [(rad)]   | [-π,π]    |
+| `ξ`       | dynamic phasor                | 𝐂         |
+| `ψ`       | anti-rotating dynamic phasor  | 𝐂         |
 
-| Set       | Description                   |
-|:----------|:------------------------------|
-| `h ∈ H`   | set of harmonic number [Int]  |
+| Set       | Description                   | Domain    |
+|:----------|:------------------------------|:----------|
+| `h ∈ H`   | set of harmonic number        | 𝐍         |
 
 | Parameter | Description                   |
 |:----------|:------------------------------|
@@ -45,7 +45,7 @@ phase `φₕ⁽⁰⁾(t)` are, respectively,
 \begin{aligned}
     a^{(0)}_{h}(t)          =& |2 \, \xi^{(0)}_{h}(t)| \\
     \phi^{(0)}_{h}(t)       =& \angle \big( \xi^{(0)}_{h}(t) \big) \\
-    \varphi^{(0)}_{h}(t)    =& \angle \big( \xi^{(0)}_{h}(t) \, \exp(-j \omega_{h} t) \big) = \angle \big( \psi^{(0)}_{h}(t) \big) = \phi^{(0)}_{h}(t) - \omega_{h}t
+    \varphi^{(0)}_{h}(t)    =& \angle \big( \xi^{(0)}_{h}(t) \, \exp(-j \omega_{h} t) \big) = \angle \big( \psi^{(0)}_{h}(t) \big)
 \end{aligned}
 ```
 The zeroth derivative hth-harmonic signal `sₕ⁽⁰⁾(t)` and overall signal `s⁽⁰⁾(t)` 
@@ -67,7 +67,7 @@ The first derivate of the hth-harmonic dynamic phasor `ξₕ⁽¹⁾(t)` is give
     \xi_{h}^{(1)}(t)        =&  \frac{\mathrm{d}\xi_{h}^{(0)}(t)}{\mathrm{d}t} \\
                             =&  \frac{1}{2} \big( a^{(1)}_{h}(t) +
                                 j \, \phi^{(1)}_{h}(t) \, a^{(0)}_{h}(t)) \big)
-                                \, \exp(j \phi^{(0)}_{h}(t))
+                                \, \exp(j \phi^{(0)}_{h}(t)).
 
 \end{aligned}
 ```
@@ -80,7 +80,7 @@ is,
                             =&  \frac{\mathrm{d}\big(\xi_{h}^{(0)}(t) 
                                 \exp(-j \omega_{h} t)\big)}{\mathrm{d}t} \\
                             =&  \big(\xi_{h}^{(1)}(t) - j \omega_{h}
-                                \xi_{h}^{(0)}(t) \big) \exp(-j \omega_{h} t)
+                                \xi_{h}^{(0)}(t) \big) \exp(-j \omega_{h} t).
 \end{aligned}
 ```
 
@@ -90,13 +90,7 @@ anti-rotating phase `φₕ⁽¹⁾(t)` are, respectively,
 \begin{aligned}
     a_{h}^{(1)}(t)          =& ℜ[2 \, \xi_{h}^{(1)}(t) \, \exp(-j \phi_{h}^{(0)}(t))] \\
     \phi_{h}^{(1)}(t)       =& \frac{ℑ[2 \, \xi_{h}^{(1)}(t) \, \exp(-j \phi_{h}^{(0)}(t))]}{a^{(0)}_{h}(t)} \\
-    \varphi_{h}^{(1)}(t)    =& \phi_{h}^{(1)}(t) - \omega_{h}
+    \varphi_{h}^{(1)}(t)    =& \frac{ℑ[2 \, \psi_{h}^{(1)}(t) \, \exp(-j \varphi_{h}^{(0)}(t))]}{a^{(0)}_{h}(t)}.
 \end{aligned}
 ```
-
-The frequency `fₕ(t)` of the zeroth derivative hth-harmonic signal `sₕ⁽⁰⁾(t)` is,
-```math
-\begin{aligned}
-    f_{h}(t)                =& TODO
-\end{aligned}
-```
+Note that implicitly this means that `ϕₕ⁽¹⁾(t) = φₕ⁽¹⁾(t)`.

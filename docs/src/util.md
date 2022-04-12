@@ -53,6 +53,14 @@ TFT.f(sol::TFT.AbstractDTFTSolution, H::Int=1)
 TFT.frequency(sol::TFT.AbstractDTFTSolution, H::Int=1)
 ```
 
+## Rate-Of-Change-Of-Frequency (ROCOF)
+```@docs
+TFT.r(sol::TFT.AbstractDTFTSolution, H::Int=1)
+```
+```@docs
+TFT.rocof(sol::TFT.AbstractDTFTSolution, H::Int=1)
+```
+
 ## Dynamic Phasor
 ```@docs
 TFT.ξ(sol::TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)

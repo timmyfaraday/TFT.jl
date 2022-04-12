@@ -77,10 +77,7 @@ is,
 ```math 
 \begin{aligned}
     \psi_{h}^{(1)}(t)       =&  \frac{\mathrm{d}\psi_{h}^{(0)}(t)}{\mathrm{d}t} \\
-                            =&  \frac{\mathrm{d}\big(\xi_{h}^{(0)}(t) 
-                                \exp(-j \omega_{h} t)\big)}{\mathrm{d}t} \\
-                            =&  \big(\xi_{h}^{(1)}(t) - j \omega_{h}
-                                \xi_{h}^{(0)}(t) \big) \exp(-j \omega_{h} t).
+                            =&  \xi_{h}^{(1)}(t) \, \exp(-j \omega_{h} t).
 \end{aligned}
 ```
 
@@ -94,3 +91,39 @@ anti-rotating phase `φₕ⁽¹⁾(t)` are, respectively,
 \end{aligned}
 ```
 Note that implicitly this means that `ϕₕ⁽¹⁾(t) = φₕ⁽¹⁾(t)`.
+
+### Second Derivative
+
+The second derivate of the hth-harmonic dynamic phasor `ξₕ⁽²⁾(t)` is given by,
+```math
+\begin{aligned}
+    \xi_{h}^{(2)}(t)        =&  \frac{\mathrm{d}\xi_{h}^{(1)}(t)}{\mathrm{d}t} \\
+                            =&  \frac{1}{2} \big( 
+                                a^{(2)}_{h}(t) - 
+                                \phi^{(1)}_{h}(t)^2 \, a^{(0)}_{h}(t) +
+                                j \, 2 \, \phi^{(1)}_{h}(t) \, a^{(1)}_{h}(t) +
+                                j \, \phi^{(2)}_{h}(t) \, a^{(0)}_{h}(t)) \big)
+                                \, \exp(j \phi^{(0)}_{h}(t)).
+
+\end{aligned}
+```
+
+The second derivative of the hth-harmomic anti-rotating dynamic phasor `ψₕ⁽²⁾(t)`
+is,
+```math 
+\begin{aligned}
+    \psi_{h}^{(2)}(t)       =&  \frac{\mathrm{d}\psi_{h}^{(1)}(t)}{\mathrm{d}t} \\
+                            =&  \xi_{h}^{(2)}(t) \exp(-j \omega_{h} t).
+\end{aligned}
+```
+
+The second derivative of the hth-harmonic amplitude `aₕ⁽²⁾(t)`, phase `ϕₕ⁽²⁾(t)` and
+anti-rotating phase `φₕ⁽²⁾(t)` are, respectively,
+```math
+\begin{aligned}
+    a_{h}^{(2)}(t)          =& ℜ[2 \, \xi_{h}^{(2)}(t) \, \exp(-j \phi_{h}^{(0)}(t))] + a_{h}^{(0)}(t) \, \phi_{h}^{(1)}(t)^{2} \\
+    \phi_{h}^{(1)}(t)       =& \frac{ℑ[2 \, \xi_{h}^{(2)}(t) \, \exp(-j \phi_{h}^{(0)}(t))] - 2 \, a_{h}^{(1)}(t) \, \phi_{h}^{(1)}(t)}{a^{(0)}_{h}(t)} \\
+    \varphi_{h}^{(1)}(t)    =& \frac{ℑ[2 \, \psi_{h}^{(2)}(t) \, \exp(-j \varphi_{h}^{(0)}(t))] - 2 \, a_{h}^{(1)}(t) \, \varphi_{h}^{(1)}(t)}{a^{(0)}_{h}(t)}.
+\end{aligned}
+```
+Note that implicitly this means that `ϕₕ⁽²⁾(t) = φₕ⁽²⁾(t)`.

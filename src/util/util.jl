@@ -33,6 +33,7 @@ Hth-harmonic phasor.
 
     aₕ⁽⁰⁾(t) = |2 ⋅ ξₕ⁽⁰⁾(t)| ∈ 𝐑⁺
     aₕ⁽¹⁾(t) = ℜ[2 ⋅ ξₕ⁽¹⁾(t) ⋅ exp(-im ⋅ ϕₕ⁽⁰⁾(t))] ∈ 𝐑⁺
+    aₕ⁽²⁾(t) = ℜ[2 ⋅ ξₕ⁽²⁾(t) ⋅ exp(-im ⋅ ϕₕ⁽⁰⁾(t))] + aₕ⁽⁰⁾(t) ⋅ ϕₕ⁽¹⁾(t)² ∈ 𝐑⁺
 
 See: [Assessing Synchrophasor Estimates of an Event Captured by a Phasor 
 Measurement Unit, pg. 3112](https://ieeexplore.ieee.org/document/9239915)
@@ -47,7 +48,9 @@ Output:
 """
 function amplitude(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
     D == 0 && return abs.(2.0 .* ξ(sol,0,H))
-    D == 1 && return real.(2.0 .*  ξ(sol,1,H) .* exp.(-im .* ϕ(sol,0,H)))
+    D == 1 && return real.(2.0 .* ξ(sol,1,H) .* exp.(-im .* ϕ(sol,0,H)))
+    D == 2 && return real.(2.0 .* ξ(sol,2,H) .* exp.(-im .* ϕ(sol,0,H))) .+
+                        a(sol,0,H) .* ϕ(sol,1,H).^2
     
     return nothing
 end
@@ -69,12 +72,14 @@ Hth-harmonic phasor.
     
     ϕₕ⁽⁰⁾(t) = ∠[pₕ⁽⁰⁾(t)] ∈ [-π,π]
     ϕₕ⁽¹⁾(t) = ℑ[2 ⋅ ξₕ⁽¹⁾(t) ⋅ exp(-im ⋅ ϕₕ⁽⁰⁾(t))] / aₕ⁽⁰⁾(t) ∈ [-π,π]
+    ϕₕ⁽²⁾(t) = {ℑ[2 ⋅ ξₕ⁽²⁾(t) ⋅ exp(-im ⋅ ϕₕ⁽⁰⁾(t))] - 2 ⋅ aₕ⁽¹⁾(t) ⋅ ϕₕ⁽¹⁾(t)} / aₕ⁽⁰⁾(t) ∈ [-π,π]
 
 See: [Assessing Synchrophasor Estimates of an Event Captured by a Phasor 
 Measurement Unit, pg. 3112](https://ieeexplore.ieee.org/document/9239915)
     
 Input:
 - `sol::AbstractDTFTSolution`   | DTFT solution struct [-]
+- `D::Int`                      | degree of the derivative [-], default=0
 - `H::Int`                      | harmonic number [-], default=1
     
 Output:
@@ -82,8 +87,10 @@ Output:
 """
 function phase(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
     D == 0 && return Base.angle.(ξ(sol,0,H))
-    D == 1 && return imag.(2.0 .*  ξ(sol,1,H) .* exp.(-im .* ϕ(sol,0,H))) ./
+    D == 1 && return imag.(2.0 .* ξ(sol,1,H) .* exp.(-im .* ϕ(sol,0,H))) ./
                         a(sol,0,H)
+    D == 2 && return (imag.(2.0 .* ξ(sol,2,H) .* exp.(-im .* ϕ(sol,0,H))) .-
+                        2.0 .* a(sol,1,H) .* ϕ(sol,1,H)) ./ a(sol,0,H)
 
     return nothing
 end
@@ -105,6 +112,7 @@ Hth-harmonic phasor.
 
     φₕ⁽⁰⁾(t) = ∠[ψₕ⁽⁰⁾(t)] ∈ [-π,π]
     φₕ⁽¹⁾(t) = ℑ[2 ⋅ ψₕ⁽¹⁾(t) ⋅ exp(-im ⋅ φₕ⁽⁰⁾(t))] / aₕ⁽⁰⁾(t) ∈ [-π,π]
+    φₕ⁽²⁾(t) = {ℑ[2 ⋅ ψₕ⁽²⁾(t) ⋅ exp(-im ⋅ φₕ⁽⁰⁾(t))] - 2 ⋅ aₕ⁽¹⁾(t) ⋅ φₕ⁽¹⁾(t)} / aₕ⁽⁰⁾(t) ∈ [-π,π]
     
 See: [Assessing Synchrophasor Estimates of an Event Captured by a Phasor 
 Measurement Unit, pg. 3112](https://ieeexplore.ieee.org/document/9239915)
@@ -121,6 +129,8 @@ function ar_phase(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
     D == 0 && return Base.angle.(ψ(sol,0,H)) 
     D == 1 && return imag.(2.0 .* ψ(sol,1,H) .* exp.(-im .* φ(sol,0,H))) ./ 
                         a(sol,0,H)
+    D == 2 && return (imag.(2.0 .* ψ(sol,2,H) .* exp.(-im .* φ(sol,0,H))) .-
+                        2.0 .* a(sol,1,H) .* φ(sol,1,H)) ./ a(sol,0,H)
     
     return nothing
 end
@@ -153,7 +163,38 @@ Output:
 - `f::Vector{<:Real}`           | frequency fₕ(t) ∈ 𝐑⁺ [Hz]
 """
 frequency(sol::AbstractDTFTSolution, H::Int=1) = 
-    F(sol,H) .+ ϕ(sol,1,1) ./ (2 * pi)
+    F(sol,H) .+ ϕ(sol,1,H) ./ (2 * pi)
+
+# rocof
+"""
+    TFT.r(sol::TFT.AbstractDTFTSolution, H::Int=1)
+
+Shorthand function to obtain the rate-of-change-of-frequency of the 
+zeroth-degree derivative of the Hth-harmonic phasor, dispatching to 
+`rocof(sol,H)`.
+"""
+r(sol::AbstractDTFTSolution, H::Int=1) = rocof(sol,H)
+
+"""
+    TFT.rocof(sol::TFT.AbstractDTFTSolution, H::Int=1)
+
+Function to obtain the rate-of-change-of-frequency of the zeroth-degree 
+derivative of the Hth-harmonic phasor.
+
+    rₕ(t) = ϕₕ⁽²⁾(t) / (2 π)² ∈ 𝐑⁺
+
+See: [Fast Taylor-Fourier Transform for Monitoring Modern Power Grids with 
+Real-Time Dynamic Harmonic Estimation](tbp)
+
+Input:
+- `sol::AbstractDTFTSolution`   | DTFT solution struct [-]
+- `H::Int`                      | harmonic number [-], default=1
+    
+Output:
+- `r::Vector{<:Real}`           | frequency rₕ(t) ∈ 𝐑⁺ [Hz]
+"""
+rocof(sol::AbstractDTFTSolution, H::Int=1) = 
+    ϕ(sol,2,H) ./ (2 * pi)^2
 
 # dynamic phasor
 """
@@ -200,8 +241,7 @@ rotating dynamic phasor, dispatching to `ar_phasor(sol,D,H)`.
 Function to obtain the D-th-degree derivative of the Hth-harmonic anti-rotating 
 dynamic phasor.
 
-    ψₕ⁽⁰⁾(t) = ξₕ⁽⁰⁾(t) exp(-im ωₕ t) ∈ 𝐂
-    ψₕ⁽¹⁾(t) = ξₕ⁽¹⁾(t) exp(-im ωₕ t) ∈ 𝐂
+    ψₕ⁽ᴰ⁾(t) = ξₕ⁽ᴰ⁾(t) exp(-im ωₕ t) ∈ 𝐂
 
 Input:
 - `sol::AbstractDTFTSolution`   | DTFT solution struct [-]
@@ -211,12 +251,8 @@ Input:
 Output:
 - `ψ::Vector{<:Complex}`        | anti-rotating dynamic phasor ψₕ⁽ᴰ⁾(t) ∈ 𝐂 [?]
 """
-function ar_phasor(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
-    D == 0 && return ξ(sol,0,H) .* exp.(-im .* ω(sol,H) .* sol.prob.t)
-    D == 1 && return ξ(sol,1,H) .* exp.(-im .* ω(sol,H) .* sol.prob.t)
-
-    return nothing
-end 
+ar_phasor(sol::AbstractDTFTSolution, D::Int=0, H::Int=1) =
+    ξ(sol,D,H) .* exp.(-im .* ω(sol,H) .* sol.prob.t)
 
 # signal
 """

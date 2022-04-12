@@ -45,6 +45,14 @@ TFT.ar_phase(sol::TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
     `ξₕ⁽⁰⁾(t)`, not the anti-rotating phase of the first derivative of the 
     dynamic phasor `ξₕ⁽¹⁾(t)`.
 
+## Frequency
+```@docs
+TFT.f(sol::TFT.AbstractDTFTSolution, H::Int=1)
+```
+```@docs
+TFT.frequency(sol::TFT.AbstractDTFTSolution, H::Int=1)
+```
+
 ## Dynamic Phasor
 ```@docs
 TFT.ξ(sol::TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)

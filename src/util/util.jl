@@ -12,7 +12,8 @@ function check_sol(sol, D, H)
     H in sol.prob.h || Base.error("the required Hth-harmonic phasor is unavailable")
 end
 
-# angular frequency
+# frequency and angular frequency
+F(sol,H) = H * sol.prob.F
 ω(sol,H) = 2.0 * pi * H * sol.prob.F 
 
 # amplitude
@@ -124,6 +125,28 @@ function ar_phase(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
     return nothing
 end
 
+# frequency
+"""
+    TFT.frequency(sol::TFT.AbstractDTFTSolution, H::Int=1)
+
+Function to obtain the frequency of the zeroth-degree derivative of the 
+Hth-harmonic phasor.
+
+    fₕ(t) = Fₕ + ϕₕ⁽¹⁾(t) / (2 π) ∈ 𝐑⁺
+
+See: [Fast Taylor-Fourier Transform for Monitoring Modern Power Grids with 
+Real-Time Dynamic Harmonic Estimation](tbp),
+
+Input:
+- `sol::AbstractDTFTSolution`   | DTFT solution struct [-]
+- `H::Int`                      | harmonic number [-], default=1
+    
+Output:
+- `f::Vector{<:Real}`           | frequency fₕ(t) ∈ 𝐑⁺ [Hz]
+"""
+frequency(sol::AbstractDTFTSolution, H::Int=1) = 
+    F(sol,H) .+ ϕ(sol,1,1) ./ (2 * pi)
+
 # dynamic phasor
 """
     TFT.ξ(sol::TFT.AbstractDTFTSolution, D::Int=0, H::Int=1)
@@ -186,6 +209,7 @@ function ar_phasor(sol::AbstractDTFTSolution, D::Int=0, H::Int=1)
 
     return nothing
 end 
+
 # signal
 """
     TFT.signal(sol::TFT.AbstractDTFTSolution)
@@ -217,8 +241,7 @@ Input:
 Output:
 - `s::Vector{<:Real}`           | signal sₕ(t) ∈ 𝐑 [?]
 """
-signal(sol::AbstractDTFTSolution, H::Int) =
-    real(ξ(sol,0,H) + conj(ξ(sol,0,H)))
+signal(sol::AbstractDTFTSolution, H::Int) = real(ξ(sol,0,H) + conj(ξ(sol,0,H)))
 
 # error
 """

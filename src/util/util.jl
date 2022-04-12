@@ -181,7 +181,7 @@ r(sol::AbstractDTFTSolution, H::Int=1) = rocof(sol,H)
 Function to obtain the rate-of-change-of-frequency of the zeroth-degree 
 derivative of the Hth-harmonic phasor.
 
-    rₕ(t) = ϕₕ⁽²⁾(t) / (2 π)² ∈ 𝐑⁺
+    rₕ(t) = ϕₕ⁽²⁾(t) / (2 π)² ∈ 𝐑
 
 See: [Fast Taylor-Fourier Transform for Monitoring Modern Power Grids with 
 Real-Time Dynamic Harmonic Estimation](tbp)
@@ -191,7 +191,7 @@ Input:
 - `H::Int`                      | harmonic number [-], default=1
     
 Output:
-- `r::Vector{<:Real}`           | frequency rₕ(t) ∈ 𝐑⁺ [Hz]
+- `r::Vector{<:Real}`           | rocof rₕ(t) ∈ 𝐑 [Hz/s]
 """
 rocof(sol::AbstractDTFTSolution, H::Int=1) = 
     ϕ(sol,2,H) ./ (2 * pi)^2

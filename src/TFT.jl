@@ -30,8 +30,8 @@ module TFT
 
     export  tft
 
-    export  amplitude, phase, ar_phase, frequency, rocof, phasor, ar_phasor, 
+    export  amplitude, phase, ar_phase, frequency, phasor, ar_phasor, 
             signal, error
-    export  a, ϕ, φ, ξ, ψ
+    export  a, ϕ, φ, f, ξ, ψ
 
 end

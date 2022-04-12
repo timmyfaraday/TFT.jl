@@ -143,7 +143,7 @@ Hth-harmonic phasor.
     fₕ(t) = Fₕ + ϕₕ⁽¹⁾(t) / (2 π) ∈ 𝐑⁺
 
 See: [Fast Taylor-Fourier Transform for Monitoring Modern Power Grids with 
-Real-Time Dynamic Harmonic Estimation](tbp),
+Real-Time Dynamic Harmonic Estimation](tbp)
 
 Input:
 - `sol::AbstractDTFTSolution`   | DTFT solution struct [-]

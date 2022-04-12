@@ -10,7 +10,8 @@ makedocs(
                     "DSL Manual"        =>
                          ["Utilities"                  => "util.md"],
                     "Developer"         =>
-                         ["Mathematical Background"    => "math.md"]
+                         ["Developer's Guide"          => "guide.md",
+                          "Mathematical Background"    => "math.md"]
                   ]
 )
 

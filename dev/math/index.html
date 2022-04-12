@@ -19,12 +19,25 @@
 
 \end{aligned}\]</p><p>The first derivative of the hth-harmomic anti-rotating dynamic phasor <code>ψₕ⁽¹⁾(t)</code> is,</p><p class="math-container">\[\begin{aligned}
     \psi_{h}^{(1)}(t)       =&amp;  \frac{\mathrm{d}\psi_{h}^{(0)}(t)}{\mathrm{d}t} \\
-                            =&amp;  \frac{\mathrm{d}\big(\xi_{h}^{(0)}(t) 
-                                \exp(-j \omega_{h} t)\big)}{\mathrm{d}t} \\
-                            =&amp;  \big(\xi_{h}^{(1)}(t) - j \omega_{h}
-                                \xi_{h}^{(0)}(t) \big) \exp(-j \omega_{h} t).
+                            =&amp;  \xi_{h}^{(1)}(t) \, \exp(-j \omega_{h} t).
 \end{aligned}\]</p><p>The first derivative of the hth-harmonic amplitude <code>aₕ⁽¹⁾(t)</code>, phase <code>ϕₕ⁽¹⁾(t)</code> and anti-rotating phase <code>φₕ⁽¹⁾(t)</code> are, respectively,</p><p class="math-container">\[\begin{aligned}
     a_{h}^{(1)}(t)          =&amp; ℜ[2 \, \xi_{h}^{(1)}(t) \, \exp(-j \phi_{h}^{(0)}(t))] \\
     \phi_{h}^{(1)}(t)       =&amp; \frac{ℑ[2 \, \xi_{h}^{(1)}(t) \, \exp(-j \phi_{h}^{(0)}(t))]}{a^{(0)}_{h}(t)} \\
     \varphi_{h}^{(1)}(t)    =&amp; \frac{ℑ[2 \, \psi_{h}^{(1)}(t) \, \exp(-j \varphi_{h}^{(0)}(t))]}{a^{(0)}_{h}(t)}.
-\end{aligned}\]</p><p>Note that implicitly this means that <code>ϕₕ⁽¹⁾(t) = φₕ⁽¹⁾(t)</code>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../util/">« Utilities</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.15 on <span class="colophon-date" title="Tuesday 12 April 2022 09:05">Tuesday 12 April 2022</span>. Using Julia version 1.7.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+\end{aligned}\]</p><p>Note that implicitly this means that <code>ϕₕ⁽¹⁾(t) = φₕ⁽¹⁾(t)</code>.</p><h3 id="Second-Derivative"><a class="docs-heading-anchor" href="#Second-Derivative">Second Derivative</a><a id="Second-Derivative-1"></a><a class="docs-heading-anchor-permalink" href="#Second-Derivative" title="Permalink"></a></h3><p>The second derivate of the hth-harmonic dynamic phasor <code>ξₕ⁽²⁾(t)</code> is given by,</p><p class="math-container">\[\begin{aligned}
+    \xi_{h}^{(2)}(t)        =&amp;  \frac{\mathrm{d}\xi_{h}^{(1)}(t)}{\mathrm{d}t} \\
+                            =&amp;  \frac{1}{2} \big( 
+                                a^{(2)}_{h}(t) - 
+                                \phi^{(1)}_{h}(t)^2 \, a^{(0)}_{h}(t) +
+                                j \, 2 \, \phi^{(1)}_{h}(t) \, a^{(1)}_{h}(t) +
+                                j \, \phi^{(2)}_{h}(t) \, a^{(0)}_{h}(t)) \big)
+                                \, \exp(j \phi^{(0)}_{h}(t)).
+
+\end{aligned}\]</p><p>The second derivative of the hth-harmomic anti-rotating dynamic phasor <code>ψₕ⁽²⁾(t)</code> is,</p><p class="math-container">\[\begin{aligned}
+    \psi_{h}^{(2)}(t)       =&amp;  \frac{\mathrm{d}\psi_{h}^{(1)}(t)}{\mathrm{d}t} \\
+                            =&amp;  \xi_{h}^{(2)}(t) \exp(-j \omega_{h} t).
+\end{aligned}\]</p><p>The second derivative of the hth-harmonic amplitude <code>aₕ⁽²⁾(t)</code>, phase <code>ϕₕ⁽²⁾(t)</code> and anti-rotating phase <code>φₕ⁽²⁾(t)</code> are, respectively,</p><p class="math-container">\[\begin{aligned}
+    a_{h}^{(2)}(t)          =&amp; ℜ[2 \, \xi_{h}^{(2)}(t) \, \exp(-j \phi_{h}^{(0)}(t))] + a_{h}^{(0)}(t) \, \phi_{h}^{(1)}(t)^{2} \\
+    \phi_{h}^{(1)}(t)       =&amp; \frac{ℑ[2 \, \xi_{h}^{(2)}(t) \, \exp(-j \phi_{h}^{(0)}(t))] - 2 \, a_{h}^{(1)}(t) \, \phi_{h}^{(1)}(t)}{a^{(0)}_{h}(t)} \\
+    \varphi_{h}^{(1)}(t)    =&amp; \frac{ℑ[2 \, \psi_{h}^{(2)}(t) \, \exp(-j \varphi_{h}^{(0)}(t))] - 2 \, a_{h}^{(1)}(t) \, \varphi_{h}^{(1)}(t)}{a^{(0)}_{h}(t)}.
+\end{aligned}\]</p><p>Note that implicitly this means that <code>ϕₕ⁽²⁾(t) = φₕ⁽²⁾(t)</code>.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../util/">« Utilities</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 0.27.15 on <span class="colophon-date" title="Tuesday 12 April 2022 15:34">Tuesday 12 April 2022</span>. Using Julia version 1.7.2.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

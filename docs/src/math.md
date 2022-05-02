@@ -13,12 +13,13 @@
 
 | Set       | Description                   | Domain    |
 |:----------|:------------------------------|:----------|
+| `d ∈ D`   | set of derivatives            | 𝐍         |
 | `h ∈ H`   | set of harmonic number        | 𝐍         |
 
-| Parameter | Description                   |
-|:----------|:------------------------------|
-| `F`       | frequency [Hz]                |
-| `ω`       | angular frequency [(rad)/s]   |
+| Parameter | Description                   | Domain    |
+|:----------|:------------------------------|:----------|
+| `F`       | frequency [Hz]                | 𝐑⁺        |
+| `ω`       | angular frequency [(rad)/s]   | 𝐑⁺        |
 
 ## Taylor-Fourier Transform
 

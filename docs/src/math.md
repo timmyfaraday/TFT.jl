@@ -23,7 +23,15 @@
 ## Taylor-Fourier Transform
 
 The Taylor-Fourier Transform function `tft()` gives the up-to-Dth derivative of 
-the Hth-harmonic dynamic phasors `ξₕ⁽ᵈ⁾(t), ∀ d ∈ {0,..,D}, h ∈ H`. 
+the Hth-harmonic dynamic phasors `ξₕ⁽ᵈ⁾(t) ∈ ℂ, ∀ d ∈ {0,..,D}, h ∈ H`. 
+
+### Zeroth Harmonic
+
+The up-to-Dth derivative of the zeroth-harmonic dynamic phasor 
+`ξ₀⁽ᵈ⁾(t) ∈ ℝ, ∀ d ∈ {0,..,D}` is given by,
+```math
+    \xi^{(d)}_{0}(t)        =& a^{(d)}_{0}(t)
+```
 
 ### Zeroth Derivative
 

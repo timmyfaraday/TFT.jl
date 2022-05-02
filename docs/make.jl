@@ -8,7 +8,8 @@ makedocs(
     authors     = "Tom Van Acker",
     pages       = [ "Home"              => "index.md",
                     "DSL Manual"        =>
-                         ["Utilities"                  => "util.md"],
+                         ["DTFT"                       => "dtft.md",
+                          "Utilities"                  => "util.md"],
                     "Developer"         =>
                          ["Developer's Guide"          => "guide.md",
                           "Mathematical Background"    => "math.md"]

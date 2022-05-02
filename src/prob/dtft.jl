@@ -85,7 +85,7 @@ abstract type AbstractDTFTSolution end
 Defines a discrete taylor-fourier transform solution
 
 Fields:
-- `X::Dict{<:Int,Matrix{<:Complex}}`    | dictionary of dynamic phasors ξₕ⁽ᴰ⁾
+- `X::Dict{<:Int,Matrix{<:Complex}}`    | dictionary of dynamic phasors ξₕ⁽ᴰ⁾(t)
 - `prob::TFT.AbstractDTFTProblem`       | DTFT problem struct
 """
 struct DTFTSolution <: AbstractDTFTSolution 

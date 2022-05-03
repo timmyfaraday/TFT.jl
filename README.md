@@ -8,7 +8,7 @@
 
 ## Overview
 
-TFT.jl is a Julia package for Taylor-Fourier Transform. xxx
+TFT.jl is a Julia package for Taylor-Fourier Transform.
 
 ## Installation
 

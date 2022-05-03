@@ -20,7 +20,8 @@ atol = 1e-6
 
 @testset "TFT.jl" begin
     
+    include("unitful.jl")
+
     include("prob/dtft.jl")
-    include("prob/unitful.jl")
 
 end

@@ -19,11 +19,11 @@ tft(prob::AbstractDTFTProblem) =
     DTFTSolution(Dict(nh => harmonic_estimator(prob, nh) for nh in prob.h), prob)
 
 """
-    TFT.tft(s::Vector{<:Real}, t::Vector{<:Real}, h::Vector{<:Int}, D::Int, F::Real, K::Int)
+    TFT.tft(s::Vector{<:Number}, t::Vector{<:Number}, h::Vector{<:Int}, D::Int, F::Real, K::Int)
 
 Input:
-- `s::Vector{<:Real}`   | discrete signal [?]
-- `t::Vector{<:Real}`   | discrete time [s]
+- `s::Vector{<:Number}` | discrete signal [?]
+- `t::Vector{<:Number}` | discrete time [s]
 - `h::Vector{<:Int}`    | harmonic numbers [-]
 - `D::Int`              | maximum degree of the derivatives [-]
 - `F::Real`             | fundamental frequency [Hz]
@@ -32,5 +32,5 @@ Input:
 Output:
 - `sol::DTFTSolution`   | DTFT solution struct
 """
-tft(s::Vector{<:Real}, t::Vector{<:Real}, h::Vector{<:Int}, D::Int, F::Real, K::Int) =
+tft(s::Vector{<:Number}, t::Vector{<:Number}, h::Vector{<:Int}, D::Int, F::Number, K::Int) =
     tft(build_problem(s, t, h, D, F, K))

@@ -13,8 +13,9 @@ function check_sol(sol, D, H)
 end
 
 # frequency and angular frequency
-F(sol,H) = H * sol.prob.F
-ω(sol,H) = 2.0 * pi * H * sol.prob.F 
+F(sol)   = sol.prob.F
+F(sol,H) = H * F(sol)
+ω(sol,H) = 2.0 * pi * F(sol,H) 
 
 # amplitude
 """
@@ -33,7 +34,7 @@ Hth-harmonic phasor.
 
     ∀ h ∈ {0}:
         a₀⁽ᴰ⁾(t) = ξ₀⁽ᴰ⁾(t)
-    ∀ h ∈ 𝓗/{0}:
+    ∀ h ∉ {0}:
         aₕ⁽⁰⁾(t) = |2 ⋅ ξₕ⁽⁰⁾(t)| ∈ 𝐑⁺
         aₕ⁽¹⁾(t) = ℜ[2 ⋅ ξₕ⁽¹⁾(t) ⋅ exp(-im ⋅ ϕₕ⁽⁰⁾(t))] ∈ 𝐑
         aₕ⁽²⁾(t) = ℜ[2 ⋅ ξₕ⁽²⁾(t) ⋅ exp(-im ⋅ ϕₕ⁽⁰⁾(t))] + aₕ⁽⁰⁾(t) ⋅ ϕₕ⁽¹⁾(t)² ∈ 𝐑
@@ -73,9 +74,9 @@ of the Hth-harmonic phasor, dispatching to `phase(sol, D, H)`.
 Function to obtain the alternative angle of the Dth-degree derivative of the 
 Hth-harmonic phasor.
     
-    ∀ h in {0}:
+    ∀ h ∈ {0}:
         ϕ₀⁽ᴰ⁾(t) = 0.0
-    ∀ h ∈ 𝓗/{0}:
+    ∀ h ∉ {0}:
         ϕₕ⁽⁰⁾(t) = ∠[pₕ⁽⁰⁾(t)] ∈ [-π,π]
         ϕₕ⁽¹⁾(t) = ℑ[2 ⋅ ξₕ⁽¹⁾(t) ⋅ exp(-im ⋅ ϕₕ⁽⁰⁾(t))] / aₕ⁽⁰⁾(t) ∈ 𝐑
         ϕₕ⁽²⁾(t) = {ℑ[2 ⋅ ξₕ⁽²⁾(t) ⋅ exp(-im ⋅ ϕₕ⁽⁰⁾(t))] - 2 ⋅ aₕ⁽¹⁾(t) ⋅ ϕₕ⁽¹⁾(t)} / aₕ⁽⁰⁾(t) ∈ 𝐑
@@ -116,9 +117,9 @@ derivative of the Hth-harmonic phasor, dispatching to `angle(sol,D,H)`.
 Function to obtain the anti-rotating phase of the Dth-degree derivative of the 
 Hth-harmonic phasor.
 
-    ∀ h in {0}:
+    ∀ h ∈ {0}:
         φ₀⁽ᴰ⁾(t) = 0.0
-    ∀ h ∈ 𝓗/{0}:
+    ∀ h ∉ {0}:
         φₕ⁽⁰⁾(t) = ∠[ψₕ⁽⁰⁾(t)] ∈ [-π,π]
         φₕ⁽¹⁾(t) = ℑ[2 ⋅ ψₕ⁽¹⁾(t) ⋅ exp(-im ⋅ φₕ⁽⁰⁾(t))] / aₕ⁽⁰⁾(t) ∈ 𝐑
         φₕ⁽²⁾(t) = {ℑ[2 ⋅ ψₕ⁽²⁾(t) ⋅ exp(-im ⋅ φₕ⁽⁰⁾(t))] - 2 ⋅ aₕ⁽¹⁾(t) ⋅ φₕ⁽¹⁾(t)} / aₕ⁽⁰⁾(t) ∈ 𝐑
@@ -172,7 +173,7 @@ Output:
 - `f::Vector{<:Real}`           | frequency fₕ(t) [Hz]
 """
 frequency(sol::AbstractDTFTSolution, H::Int=1) = 
-    F(sol,H) .+ ϕ(sol,1,H) ./ (2 * pi)
+    F(sol,H) .+ (ϕ(sol,1,H) ./ (2 * pi))unit(F(sol))
 
 # rocof
 """
@@ -200,10 +201,10 @@ Input:
 - `H::Int`                      | harmonic number [-], default=1
     
 Output:
-- `r::Vector{<:Real}`           | rocof rₕ(t) [Hz/s]
+- `r::Vector{<:Real}`           | rocof rₕ(t) [Hz²]
 """
 rocof(sol::AbstractDTFTSolution, H::Int=1) = 
-    ϕ(sol,2,H) ./ (2 * pi)^2
+    (ϕ(sol,2,H) ./ (2 * pi)^2)unit(F(sol))^2
 
 # dynamic phasor
 """
@@ -223,7 +224,7 @@ dynamic phasor is returned.
 
     ∀ h ∈ {0}:
         ξ₀⁽ᴰ⁾(t) ∈ ℝ
-    ∀ h ∈ 𝓗/{0}
+    ∀ h ∉ {0}:
         ξₕ⁽ᴰ⁾(t) ∈ ℂ
 
 Input:
@@ -258,7 +259,7 @@ dynamic phasor.
 
     ∀ h ∈ {0}:
         ψ₀⁽ᴰ⁾(t) = ξ₀⁽ᴰ⁾(t) ∈ ℝ
-    ∀ h ∈ 𝓗/{0}:
+    ∀ h ∉ {0}:
         ψₕ⁽ᴰ⁾(t) = ξₕ⁽ᴰ⁾(t) exp(-im ωₕ t) ∈ 𝐂
 
 Input:
@@ -295,7 +296,7 @@ Function to obtain the Hth-harmonic signal.
 
     ∀ h ∈ {0}:
         s₀(t) = ξ₀⁽⁰⁾(t) ∈ 𝐑
-    ∀ h ∈ H/{0}: 
+    ∀ h ∉ {0}: 
         sₕ(t) = ℜ[ξₕ⁽⁰⁾(t) + conj(ξₕ⁽⁰⁾(t))] ∈ 𝐑
 
 Note: In its essence, the real operator `ℜ[]`` is unnecessary, however, it is 

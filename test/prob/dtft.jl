@@ -7,6 +7,19 @@
 ################################################################################
 
 @testset "DTFT" begin
+
+    # fundamental frequency and angular frequency
+    F   = 50.0
+    ω   = 2 * pi * F
+
+    # tft input
+    D   = 2
+    K   = 9
+
+    # discrete time
+    t   = 0.0:0.0001:1.0
+    tm  = 0.5036
+    idm = findfirst(x -> x == tm, t)
     
     @testset "Zeroth Harmonic Constant Signal" begin
         # input - amplitude
@@ -159,8 +172,8 @@
         @test isapprox(TFT.ϕ(sol,2,1)[idm], d2Φ(tm), atol=atol)
         ## anti-rotating phase
         @test isapprox(TFT.φ(sol,0,1)[idm], Φ(tm), atol=atol)
-        @test isapprox(TFT.ϕ(sol,1,1)[idm], dΦ(tm), atol=atol)
-        @test isapprox(TFT.ϕ(sol,2,1)[idm], d2Φ(tm), atol=atol)
+        @test isapprox(TFT.φ(sol,1,1)[idm], dΦ(tm), atol=atol)
+        @test isapprox(TFT.φ(sol,2,1)[idm], d2Φ(tm), atol=atol)
         ## frequency 
         @test isapprox(TFT.f(sol,1)[idm], Fr(tm), atol=atol)
         ## rocof
@@ -212,8 +225,8 @@
         @test isapprox(TFT.ϕ(sol,2,1)[idm], d2Φ(tm), atol=atol)
         ## anti-rotating phase
         @test isapprox(TFT.φ(sol,0,1)[idm], Φ(tm), atol=atol)
-        @test isapprox(TFT.ϕ(sol,1,1)[idm], dΦ(tm), atol=atol)
-        @test isapprox(TFT.ϕ(sol,2,1)[idm], d2Φ(tm), atol=atol)
+        @test isapprox(TFT.φ(sol,1,1)[idm], dΦ(tm), atol=atol)
+        @test isapprox(TFT.φ(sol,2,1)[idm], d2Φ(tm), atol=atol)
         ## frequency 
         @test isapprox(TFT.f(sol,1)[idm], Fr(tm), atol=atol)
         ## rocof

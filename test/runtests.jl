@@ -10,22 +10,10 @@
 using ForwardDiff
 using Test
 using TFT
+using Unitful
 
 # pkg constants
 const _FD = ForwardDiff
-
-# fundamental frequency and angular frequency
-F   = 50.0 
-ω   = 2 * pi * F
-
-# tft input
-D   = 2
-K   = 9
-
-# discrete time
-t   = 0.0:0.0001:1.0
-tm  = 0.5036
-idm = findfirst(x -> x == tm, t)
 
 # tolerances
 atol = 1e-6
@@ -33,5 +21,6 @@ atol = 1e-6
 @testset "TFT.jl" begin
     
     include("prob/dtft.jl")
+    include("prob/unitful.jl")
 
 end

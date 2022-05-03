@@ -10,7 +10,11 @@ Polynomials = "f27b6e38-b328-58d1-80ce-0feddd5e7a45"
 Unitful = "1986cc42-f94f-5a68-af5c-568840ba703d"
 
 [compat]
+DSP = "0.7"
 ForwardDiff = "0.10"
+Polynomials = "3.0"
+Unitful = "1.11"
+
 julia = "1.6"
 
 [extras]

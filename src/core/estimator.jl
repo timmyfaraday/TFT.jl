@@ -43,21 +43,28 @@ function harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
     # return the up-to-Dth-degree derivative of the H-th harmonic complex envelope
     return _DSP.conv(prob.s, Y)[rC, :]  
 end
-
 """
-    TFT.fast_harmonic_estimator(prob::TFT.AbstractDTFTProblem, H::Int)
+TFT.FTFT(Φ::Matrix{<:Real}, D::Int, K::Int, N::Int,s::Matrix{<:Real})
 
-Function to obtain the up-to-Dth-degree derivative of the Hth-harmonic complex
-envelope.
+Function to obtain the Fast Taylor Fourier transform FTFT
+Uses the samples of the up-to-Dth-degree derivatives of Kth-degree o-spline in matrix Φ.
 
 Input:
-- `prob::AbstractDTFTProblem`   | DTFT problem struct
-- `H::Int`                      | harmonic number [-]
+- `Φ::Matrix{<:Real}` | Contains inthe rows the O-spline of Kth order and its derivatives up to order D
+- `D::Int`  | maximum degree of the derivative [-]
+- `K::Int`  | degree of the o-spline [-]
+- `N::Int`  | number of samples of the fundamental cycle [-]
+- `s::Matrix{<:Real}` | (K+1)Nx1 veector with signal samples  
 
-Output:
-- `X::Matrix{<:Complex}`        | up-to-Dth-degree derivative of the 
-                                | Hth-harmonic complex envelope
+Output
+- `ξ::Matrix{<:Complex}` | (D+1)Nx1 vector with the harmonic Taylor-Fourier coefficients up to the D derivative.
+                         | obtained with the Kth-degree o-spline 
 """
-function fast_harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
-    # this is where the magic happens
-end
+function FTFT(Φ::Matrix{<:Real}, D::Int, K::Int, N::Int, s::Matrix{<:Real})
+    for nd=1:D+1
+        hd=Φ[nd,:]'.*s
+        S=reshape(hd,(N,K+1))
+        shd=sum(S,dims=2)
+        ξ[(nd-1)*N+1:nd*N]=fft(shd)/N
+    end    
+

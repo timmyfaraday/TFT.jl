@@ -11,14 +11,16 @@ module TFT
     # import pkg
     import DSP
     import Polynomials
+    import FFTW
     
     # using pkg 
     using Unitful
 
     # pkg constants 
-    const _DSP = DSP
-    const _POL = Polynomials
-    const _UF  = Unitful
+    const _DSP  = DSP
+    const _POL  = Polynomials
+    const _UF   = Unitful
+    const _FFTW = FFTW 
 
     # include
     include("prob/dtft.jl")

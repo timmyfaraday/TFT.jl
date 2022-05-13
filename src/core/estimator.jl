@@ -1,5 +1,5 @@
 ################################################################################
-#  Copyright 2022, Tom Van Acker (BASF Antwerp)                                #
+#  Copyright 2022, Jose Antonio de la O Serna (UANL), Tom Van Acker (BASF)     #
 ################################################################################
 # TFT.jl                                                                       #
 # A Julia package for Taylor-Fourier Transform.                                #
@@ -43,28 +43,42 @@ function harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
     # return the up-to-Dth-degree derivative of the H-th harmonic complex envelope
     return _DSP.conv(prob.s, Y)[rC, :]  
 end
+
 """
-TFT.FTFT(Φ::Matrix{<:Real}, D::Int, K::Int, N::Int,s::Matrix{<:Real})
+    TFT.FTFT(Φ::Matrix{<:Real}, D::Int, K::Int, N::Int,s::Matrix{<:Real})
 
 Function to obtain the Fast Taylor Fourier transform FTFT
 Uses the samples of the up-to-Dth-degree derivatives of Kth-degree o-spline in matrix Φ.
 
 Input:
-- `Φ::Matrix{<:Real}` | Contains inthe rows the O-spline of Kth order and its derivatives up to order D
-- `D::Int`  | maximum degree of the derivative [-]
-- `K::Int`  | degree of the o-spline [-]
-- `N::Int`  | number of samples of the fundamental cycle [-]
-- `s::Matrix{<:Real}` | (K+1)Nx1 veector with signal samples  
+- `prob::AbstractDTFTProblem`       | DTFT problem struct
 
-Output
-- `ξ::Matrix{<:Complex}` | (D+1)Nx1 vector with the harmonic Taylor-Fourier coefficients up to the D derivative.
-                         | obtained with the Kth-degree o-spline 
+Output:
+- `X::Dict{Int,Matrix{<:Complex}}`  | dictionary contain up-to-Dth-degree 
+                                    | derivative of the dynamic phasors for the
+                                    | full set of harmonics
 """
-function FTFT(Φ::Matrix{<:Real}, D::Int, K::Int, N::Int, s::Matrix{<:Real})
-    for nd=1:D+1
-        hd=Φ[nd,:]'.*s
-        S=reshape(hd,(N,K+1))
-        shd=sum(S,dims=2)
-        ξ[(nd-1)*N+1:nd*N]=fft(shd)/N
+function FTFT(prob::AbstractDTFTProblem)
+    # initialize X
+    X = Dict(nh => zeros(Float64,length(prob.s),prob.D+1) for nh in 1:prob.N)
+
+    # samples of up-to-Dth-degree derivative of the Kth-degree o-spline `Φ`
+    Φ   = sample_ospline(prob.D, prob.K, prob.N)
+
+    # enumerate over the derivatives
+    for nd in 1:prob.D+1
+        # cyclic Hadamar product
+        hd = Φ[:,nd] .* prob.s[1:((prob.K+1)*prob.N)]
+        # reshape to make it a matrix
+        S  = reshape(hd,(prob.N,prob.K+1))
+        # sum of the cyclic Hadamar product
+        shd= sum(S,dims=2)
+        # fill X
+        X[ ] = _FFTW.fft(shd)/prob.N
+
+        # = ξ[(nd-1)*N+1:nd*N]
+
     end    
 
+    return X
+end

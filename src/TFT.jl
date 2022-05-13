@@ -11,10 +11,14 @@ module TFT
     # import pkg
     import DSP
     import Polynomials
+    
+    # using pkg 
+    using Unitful
 
     # pkg constants 
     const _DSP = DSP
     const _POL = Polynomials
+    const _UF  = Unitful
 
     # include
     include("prob/dtft.jl")
@@ -26,10 +30,12 @@ module TFT
     include("util/util.jl")
 
     # export
-    export DTFTProblem, DTFTSolution
+    export  DTFTProblem, DTFTSolution
 
-    export tft
+    export  tft
 
-    export amplitude, angle, frequency, rocof, phasor, signal, overall_signal, error
+    export  amplitude, phase, ar_phase, frequency, rocof, phasor, ar_phasor, 
+            signal, error
+    export  a, ϕ, φ, f, r, ξ, ψ
 
 end

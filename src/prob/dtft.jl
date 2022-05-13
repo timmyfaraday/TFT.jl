@@ -21,33 +21,33 @@ abstract type AbstractDTFTProblem end
 Defines a discrete taylor-fourier transform problem.
 
 Fields:
-- `s::Vector{<:Real}`       | discrete signal [?]
-- `t::StepRangeLen{<:Real}` | discrete time [s]
-- `h::Vector{<:Int}`        | harmonic numbers [-]
-- `D::Int`                  | degree of the highest derivative [-]
-- `F::Real`                 | fundamental frequency [Hz]
-- `K::Int`                  | o-spline degree [-]
-- `N::Int`                  | number of samples per fundamental cycle [-]
+- `s::Vector{<:Number}`         | discrete signal [?]
+- `t::StepRangeLen{<:Number}`   | discrete time [s]
+- `h::Vector{<:Int}`            | harmonic numbers [-]
+- `D::Int`                      | degree of the highest derivative [-]
+- `F::Number`                   | fundamental frequency [Hz]
+- `K::Int`                      | o-spline degree [-]
+- `N::Int`                      | number of samples per fundamental cycle [-]
 """
 struct DTFTProblem <: AbstractDTFTProblem
     """"discrete signal"""
-    s::Vector{<:Real}
+    s::Vector{<:Number}
     """discrete time"""
-    t::StepRangeLen{<:Real}
+    t::StepRangeLen{<:Number}
     """harmonic numbers"""
     h::Vector{<:Int}
     """degree of the highest derivative"""
     D::Int
     """fundamental frequency"""
-    F::Real
+    F::Number
     """o-spline degree"""
     K::Int
     """number of samples per fundamental cycle"""
     N::Int
 
     # base constructor
-    DTFTProblem(s::Vector{<:Real}, t::StepRangeLen{<:Real}, h::Vector{<:Int}, 
-                D::Int, F::Real, K::Int, N::Int) =
+    DTFTProblem(s::Vector{<:Number}, t::StepRangeLen{<:Number}, h::Vector{<:Int}, 
+                D::Int, F::Number, K::Int, N::Int) =
         new(s, t, h, D, F, K, N)
 end
 
@@ -58,17 +58,16 @@ function build_problem(s, t, h, D, F, K)
     all(diff(t) .≈ (t[2] - t[1]))   || error("the discrete time is not equidistance")
 
     # reduce the discrete time to a range `rT`
-    # NB: the rounding function is added to avoid numerical issues
-    ΔT  = round(t[2] - t[1], digits=10)
-    rT  = round(t[1], digits=10):ΔT:round(t[end], digits=10)
+    rT  = range(first(t), last(t), length=length(t))
     
     # determine the fundamental period [s]
     T   = 1 / F
-    # find the number of samples in a fundamental cycle [-]
-    # NB: the rounding function is added to avoid numerical issues
-    N   = findfirst(x -> x == round(t[1] + T, digits=10), t) - 1
 
-    return DTFTProblem(s, rT, h, D, F, K, N)
+    # find the number of samples in a fundamental cycle [-]
+    N   = findfirst(x -> x ≈ first(t) + T, t) - 1
+
+    # NB: the frequency is set to either `Hz` or unitless.
+    return DTFTProblem(s, rT, h, D, upreferred(F), K, N)
 end
     
 # solution types
@@ -85,11 +84,11 @@ abstract type AbstractDTFTSolution end
 Defines a discrete taylor-fourier transform solution
 
 Fields:
-- `X::Dict{<:Int,Matrix{<:Complex}}`    | dictionary of complex envelopes ξₕ⁽ᴰ⁾
+- `X::Dict{<:Int,Matrix{<:Number}}`     | dictionary of dynamic phasors ξₕ⁽ᴰ⁾(t)
 - `prob::TFT.AbstractDTFTProblem`       | DTFT problem struct
 """
 struct DTFTSolution <: AbstractDTFTSolution 
-    """dictionary of complex envelopes ξₕ⁽ᴰ⁾"""
+    """dictionary of dynamic phasors ξₕ⁽ᴰ⁾"""
     X::Dict
     """DTFT problem struct"""
     prob::AbstractDTFTProblem

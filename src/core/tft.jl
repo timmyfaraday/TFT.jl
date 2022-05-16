@@ -62,4 +62,4 @@ Output:
 - `sol::DTFTSolution`   | DTFT solution struct
 """
 ftft(s::Vector{<:Number}, t::Vector{<:Number}, D::Int, F::Number, K::Int) =
-    ftft(build_problem(s, t, [1], D, F, K)) ## harmonics set is determined based on N
+    ftft(build_problem(s, t, D, F, K)) 

@@ -34,7 +34,7 @@ module TFT
     # export
     export  DTFTProblem, DTFTSolution
 
-    export  tft
+    export  tft, ftft
 
     export  amplitude, phase, ar_phase, frequency, rocof, phasor, ar_phasor, 
             signal, error

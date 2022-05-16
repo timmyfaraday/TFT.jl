@@ -59,26 +59,27 @@ Output:
                                     | full set of harmonics
 """
 function FTFT(prob::AbstractDTFTProblem)
-    # initialize X
-    X = Dict(nh => zeros(Float64,length(prob.s),prob.D+1) for nh in 1:prob.N)
+    # initialize a matrix of the size (|s|,|h|,D) to store the up-to-Dth-degree 
+    # derivative of the dynamic phasors for the full set of harmonics
+    X   = zeros(Number, length(prob.s), prob.N, prob.D+1)
 
     # samples of up-to-Dth-degree derivative of the Kth-degree o-spline `Φ`
     Φ   = sample_ospline(prob.D, prob.K, prob.N)
 
-    # enumerate over the derivatives
-    for nd in 1:prob.D+1
-        # cyclic Hadamar product
-        hd = Φ[:,nd] .* prob.s[1:((prob.K+1)*prob.N)]
-        # reshape to make it a matrix
-        S  = reshape(hd,(prob.N,prob.K+1))
-        # sum of the cyclic Hadamar product
-        shd= sum(S,dims=2)
-        # fill X
-        X[ ] = _FFTW.fft(shd)/prob.N
+    # determine the shift to center the 'current' signal point
+    Δs  = floor(Int, prob.N * (prob.K+1) / 2)
 
-        # = ξ[(nd-1)*N+1:nd*N]
+    for (ni,ns) in enumerate(prob.s) if Δs < ni <= length(prob.s) - Δs
+        # determine the selected range of the signal with 'center' ni
+        rS  = (ni-Δs):(ni+Δs+1) 
+        # determine the Hadamar product of the osplines and the selected signal
+        hd  = Φ .* prob.s[rS]
+        # sum the Hadamar product over o-spline degrees
+        shd = [sum(hd[nh:prob.N:end, :], dims=1) for nk in 1:prob.N]
+        # perform the fft and store the result at ni
+        X[ni,:,:] = _FFTW.fft(reduce(vcat,shd), [1]) / prob.N
+    end end
 
-    end    
-
-    return X
+    # return a dictionary of spliced arrays over the harmonic numbers
+    return Dict(nh => X[:,nh,:] for nh in prob.h)
 end

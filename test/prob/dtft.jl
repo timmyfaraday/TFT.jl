@@ -256,7 +256,7 @@
         d2Φ(t)  = _FD.derivative(dΦ,t)
 
         # derived input
-        Φr(t)   = rem.(ω .*t .+ Φ.(t) .+ pi, 2 * pi) .- pi
+        Φr(t)   = rem.(ω .* t .+ Φ.(t) .+ pi, 2 * pi) .- pi
         Fr(t)   = F + dΦ(t) / (2 * pi)
         Rr(t)   = d2Φ(t) / (2 * pi)^2
         Ξ(t)    = A.(t) ./ 2 .* exp.(im .* Φ.(t)) .* exp.(im .* ω .* t)

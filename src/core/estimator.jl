@@ -41,7 +41,7 @@ function harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
     rC  = O:O+length(prob.s)-1
     
     # return the up-to-Dth-degree derivative of the H-th harmonic complex envelope
-    return _DSP.conv(prob.s, Y)[rC, :]  
+    return _DSP.conv(_UF.ustrip.(prob.s), Y)[rC, :]unit(prob.s[1])  
 end
 
 """
@@ -71,15 +71,15 @@ function FTFT(prob::AbstractDTFTProblem)
 
     for (ni,ns) in enumerate(prob.s) if Δs < ni <= length(prob.s) - Δs
         # determine the selected range of the signal with 'center' ni
-        rS  = (ni-Δs):(ni+Δs+1) 
+        rS  = (ni-Δs):(ni+Δs-1) 
         # determine the Hadamar product of the osplines and the selected signal
         hd  = Φ .* prob.s[rS]
         # sum the Hadamar product over o-spline degrees
-        shd = [sum(hd[nh:prob.N:end, :], dims=1) for nk in 1:prob.N]
+        shd = [sum(hd[nh:prob.N:end, :], dims=1) for nh in 1:prob.N]
         # perform the fft and store the result at ni
         X[ni,:,:] = _FFTW.fft(reduce(vcat,shd), [1]) / prob.N
     end end
 
     # return a dictionary of spliced arrays over the harmonic numbers
-    return Dict(nh => X[:,nh,:] for nh in prob.h)
+    return Dict(nh => X[:,nh+1,:] for nh in prob.h)
 end

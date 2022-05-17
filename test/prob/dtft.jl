@@ -17,8 +17,8 @@
     K   = 9
 
     # discrete time
-    t   = 0.0:0.0001:1.0
-    tm  = 0.5036
+    t   = 0.0:0.001:1.0
+    tm  = 0.536
     idm = findfirst(x -> x == tm, t)
     
     @testset "Zeroth Harmonic Constant Signal" begin

@@ -17,8 +17,8 @@
     K   = 9
 
     # discrete time
-    t   = (0.0:0.0001:1.0)u"s"
-    tm  = 0.5036u"s"
+    t   = (0.0:0.001:1.0)u"s"
+    tm  = 0.536u"s"
     idm = findfirst(x -> x == tm, t)
 
     # tolerances

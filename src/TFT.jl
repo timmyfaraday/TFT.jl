@@ -18,6 +18,9 @@ module TFT
     const _POL  = Polynomials
     const _FFTW = FFTW 
 
+    # paths
+    const BASE_DIR = dirname(@__DIR__)
+
     # include
     include("types/dtft.jl")
 

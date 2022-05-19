@@ -45,10 +45,10 @@ function harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
 end
 
 """
-    TFT.FTFT(Φ::Matrix{<:Real}, D::Int, K::Int, N::Int,s::Matrix{<:Real})
+    TFT.fast_estimator(prob::AbstractDTFTProblem)
 
-Function to obtain the Fast Taylor Fourier transform FTFT
-Uses the samples of the up-to-Dth-degree derivatives of Kth-degree o-spline in matrix Φ.
+Function to obtain the Fast Taylor Fourier transform FTFT. Uses the samples of 
+the up-to-Dth-degree derivatives of Kth-degree o-spline in matrix Φ.
 
 Input:
 - `prob::AbstractDTFTProblem`       | DTFT problem struct
@@ -58,7 +58,7 @@ Output:
                                     | derivative of the dynamic phasors for the
                                     | full set of harmonics
 """
-function FTFT(prob::AbstractDTFTProblem)
+function fast_estimator(prob::AbstractDTFTProblem)
     # initialize a matrix of the size (|s|,|h|,D) to store the up-to-Dth-degree 
     # derivative of the dynamic phasors for the full set of harmonics
     X   = zeros(Number, length(prob.s), prob.N, prob.D+1)
@@ -73,8 +73,6 @@ function FTFT(prob::AbstractDTFTProblem)
         # determine the selected range of the signal with 'center' ni
         rS  = (ni-Δs):(ni+Δs-1) 
         # determine the Hadamar product of the osplines and the selected signal
-        ## @Antonio: tests shows that a multiplication with the frequency is necessary -> fixed with addition of .* _UF.ustrip(prob.F).^collect(0:prob.D)
-        ## @Antonio: tests shows that there is an sign issue! -> proposed solution (-F)^d
         hd  = Φ .* prob.s[rS] .* (-prob.F).^collect(0:prob.D)'
         # sum the Hadamar product over o-spline degrees
         shd = [sum(hd[nh:prob.N:end, :], dims=1) for nh in 1:prob.N]

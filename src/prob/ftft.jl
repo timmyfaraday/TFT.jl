@@ -15,7 +15,7 @@ Input:
 Output:
 - `sol::AbstractDTFTSolution`   | DTFT solution struct
 """
-ftft(prob::AbstractDTFTProblem) = DTFTSolution(FTFT(prob), prob)
+ftft(prob::AbstractDTFTProblem) = DTFTSolution(fast_estimator(prob), prob)
 
 """
 TFT.ftft(s::Vector{<:Number}, t::Vector{<:Number}, D::Int, F::Real, K::Int)

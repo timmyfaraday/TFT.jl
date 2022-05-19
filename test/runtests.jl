@@ -1,5 +1,5 @@
 ################################################################################
-#  Copyright 2022, Tom Van Acker (BASF Antwerp)                                #
+#  Copyright 2022, Tom Van Acker (BASF)                                        #
 ################################################################################
 # TFT.jl                                                                       #
 # A Julia package for Taylor-Fourier Transform.                                #
@@ -10,7 +10,6 @@
 using ForwardDiff
 using Test
 using TFT
-using Unitful
 
 # pkg constants
 const _FD = ForwardDiff
@@ -19,9 +18,8 @@ const _FD = ForwardDiff
 atol = 1e-6
 
 @testset "TFT.jl" begin
-    
-    include("unitful.jl")
 
-    include("prob/dtft.jl")
+    include("prob/tft.jl")
+    include("prob/ftft.jl")
 
 end

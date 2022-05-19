@@ -1,5 +1,5 @@
 ################################################################################
-#  Copyright 2022, Tom Van Acker (BASF Antwerp)                                #
+#  Copyright 2022, Tom Van Acker (BASF)                                        #
 ################################################################################
 # TFT.jl                                                                       #
 # A Julia package for Taylor-Fourier Transform.                                #

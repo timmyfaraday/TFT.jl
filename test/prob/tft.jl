@@ -1,12 +1,12 @@
 ################################################################################
-#  Copyright 2022, Tom Van Acker (BASF Antwerp)                                #
+#  Copyright 2022, Tom Van Acker (BASF)                                        #
 ################################################################################
 # TFT.jl                                                                       #
 # A Julia package for Taylor-Fourier Transform.                                #
 # See http://github.com/timmyfaraday/TFT.jl                                    #
 ################################################################################
 
-@testset "DTFT" begin
+@testset "TFT" begin
 
     # fundamental frequency and angular frequency
     F   = 50.0
@@ -17,8 +17,8 @@
     K   = 9
 
     # discrete time
-    t   = 0.0:0.0001:1.0
-    tm  = 0.5036
+    t   = 0.0:0.001:1.0
+    tm  = 0.536
     idm = findfirst(x -> x == tm, t)
     
     @testset "Zeroth Harmonic Constant Signal" begin
@@ -35,13 +35,15 @@
         S(t)    = A.(t)
 
         # perform taylor-fourier transform
-        sol = tft(S.(t), collect(t), [0], D, F, K)
+        sol = tft(S.(t), collect(t), [0,10], D, F, K)
 
         # tests
         ## amplitude
         @test isapprox(TFT.a(sol,0,0)[idm], A(tm), atol=atol)
         @test isapprox(TFT.a(sol,1,0)[idm], dA(tm), atol=atol)
         @test isapprox(TFT.a(sol,2,0)[idm], d2A(tm), atol=atol)
+        ### --- amplitude of non-present harmonic should be zero
+        @test isapprox(TFT.a(sol,0,10)[idm], 0.0, atol=atol)
         ## phase
         @test isapprox(TFT.ϕ(sol,0,0)[idm], 0.0, atol=atol)
         ## anti-rotating phase
@@ -55,6 +57,8 @@
         ## signal        
         @test isapprox(TFT.signal(sol)[idm], S(tm), atol=atol)
         @test isapprox(TFT.signal(sol,0)[idm], S(tm), atol=atol)
+        ### --- signal of non-present harmonic should be zero
+        @test isapprox(TFT.signal(sol,10)[idm], 0.0, atol=atol)
         ## error 
         @test isapprox(TFT.error(sol)[idm], 0.0, atol=atol)
 
@@ -74,13 +78,15 @@
         S(t)    = A.(t)
 
         # perform taylor-fourier transform
-        sol = tft(S.(t), collect(t), [0], D, F, K)
+        sol = tft(S.(t), collect(t), [0,10], D, F, K)
 
         # tests
         ## amplitude
         @test isapprox(TFT.a(sol,0,0)[idm], A(tm), atol=atol)
         @test isapprox(TFT.a(sol,1,0)[idm], dA(tm), atol=atol)
         @test isapprox(TFT.a(sol,2,0)[idm], d2A(tm), atol=atol)
+        ### --- amplitude of non-present harmonic should be zero
+        @test isapprox(TFT.a(sol,0,10)[idm], 0.0, atol=atol)
         ## phase
         @test isapprox(TFT.ϕ(sol,0,0)[idm], 0.0, atol=atol)
         ## anti-rotating phase
@@ -94,6 +100,8 @@
         ## signal        
         @test isapprox(TFT.signal(sol)[idm], S(tm), atol=atol)
         @test isapprox(TFT.signal(sol,0)[idm], S(tm), atol=atol)
+        ### --- signal of non-present harmonic should be zero
+        @test isapprox(TFT.signal(sol,10)[idm], 0.0, atol=atol)
         ## error 
         @test isapprox(TFT.error(sol)[idm], 0.0, atol=atol)
 
@@ -113,13 +121,15 @@
         S(t)    = A.(t)
 
         # perform taylor-fourier transform
-        sol = tft(S.(t), collect(t), [0], D, F, K)
+        sol = tft(S.(t), collect(t), [0,10], D, F, K)
 
         # tests
         ## amplitude
         @test isapprox(TFT.a(sol,0,0)[idm], A(tm), atol=atol)
         @test isapprox(TFT.a(sol,1,0)[idm], dA(tm), atol=atol)
         @test isapprox(TFT.a(sol,2,0)[idm], d2A(tm), atol=atol)
+        ### --- amplitude of non-present harmonic should be zero
+        @test isapprox(TFT.a(sol,0,10)[idm], 0.0, atol=atol)
         ## phase
         @test isapprox(TFT.ϕ(sol,0,0)[idm], 0.0, atol=atol)
         ## anti-rotating phase
@@ -133,6 +143,8 @@
         ## signal        
         @test isapprox(TFT.signal(sol)[idm], S(tm), atol=atol)
         @test isapprox(TFT.signal(sol,0)[idm], S(tm), atol=atol)
+        ### --- signal of non-present harmonic should be zero
+        @test isapprox(TFT.signal(sol,10)[idm], 0.0, atol=atol)
         ## error 
         @test isapprox(TFT.error(sol)[idm], 0.0, atol=atol)
 
@@ -159,21 +171,29 @@
                   conj.(A.(t) ./ 2 .* exp.(im .* Φ.(t)) .* exp.(im .* ω .* t)))
 
         # perform taylor-fourier transform
-        sol = tft(S.(t), collect(t), [1], D, F, K)
+        sol = tft(S.(t), collect(t), [1,10], D, F, K)
 
         # tests
         ## amplitude
         @test isapprox(TFT.a(sol,0,1)[idm], A(tm), atol=atol)
         @test isapprox(TFT.a(sol,1,1)[idm], dA(tm), atol=atol)
         @test isapprox(TFT.a(sol,2,1)[idm], d2A(tm), atol=atol)
+        ### --- amplitude of derivative degree higher than two not supported
+        @test TFT.a(sol,3,1) === nothing
+        ### --- amplitude of non-present harmonic should be zero
+        @test isapprox(TFT.a(sol,0,10)[idm], 0.0, atol=atol)
         ## phase
         @test isapprox(TFT.ϕ(sol,0,1)[idm], Φr(tm), atol=atol)
         @test isapprox(TFT.ϕ(sol,1,1)[idm], dΦ(tm), atol=atol)
         @test isapprox(TFT.ϕ(sol,2,1)[idm], d2Φ(tm), atol=atol)
+        ### --- phase of derivative degree higher than two not supported
+        @test TFT.ϕ(sol,3,1) === nothing
         ## anti-rotating phase
         @test isapprox(TFT.φ(sol,0,1)[idm], Φ(tm), atol=atol)
         @test isapprox(TFT.φ(sol,1,1)[idm], dΦ(tm), atol=atol)
         @test isapprox(TFT.φ(sol,2,1)[idm], d2Φ(tm), atol=atol)
+        ### --- ar phase of derivative degree higher than two not supported
+        @test TFT.φ(sol,3,1) === nothing
         ## frequency 
         @test isapprox(TFT.f(sol,1)[idm], Fr(tm), atol=atol)
         ## rocof
@@ -187,6 +207,8 @@
         ## signal        
         @test isapprox(TFT.signal(sol)[idm], S(tm), atol=atol)
         @test isapprox(TFT.signal(sol,1)[idm], S(tm), atol=atol)
+        ### --- signal of non-present harmonic should be zero
+        @test isapprox(TFT.signal(sol,10)[idm], 0.0, atol=atol)
         ## error 
         @test isapprox(TFT.error(sol)[idm], 0.0, atol=atol)
     end
@@ -212,21 +234,29 @@
                   conj.(A.(t) ./ 2 .* exp.(im .* Φ.(t)) .* exp.(im .* ω .* t)))
 
         # perform taylor-fourier transform
-        sol = tft(S.(t), collect(t), [1], D, F, K)
+        sol = tft(S.(t), collect(t), [1,10], D, F, K)
 
         # tests
         ## amplitude
         @test isapprox(TFT.a(sol,0,1)[idm], A(tm), atol=atol)
         @test isapprox(TFT.a(sol,1,1)[idm], dA(tm), atol=atol)
         @test isapprox(TFT.a(sol,2,1)[idm], d2A(tm), atol=atol)
+        ### --- amplitude of derivative degree higher than two not supported
+        @test TFT.a(sol,3,1) === nothing
+        ### --- amplitude of non-present harmonic should be zero
+        @test isapprox(TFT.a(sol,0,10)[idm], 0.0, atol=atol)
         ## phase
         @test isapprox(TFT.ϕ(sol,0,1)[idm], Φr(tm), atol=atol)
         @test isapprox(TFT.ϕ(sol,1,1)[idm], dΦ(tm), atol=atol)
         @test isapprox(TFT.ϕ(sol,2,1)[idm], d2Φ(tm), atol=atol)
+        ### --- phase of derivative degree higher than two not supported
+        @test TFT.ϕ(sol,3,1) === nothing
         ## anti-rotating phase
         @test isapprox(TFT.φ(sol,0,1)[idm], Φ(tm), atol=atol)
         @test isapprox(TFT.φ(sol,1,1)[idm], dΦ(tm), atol=atol)
         @test isapprox(TFT.φ(sol,2,1)[idm], d2Φ(tm), atol=atol)
+        ### --- ar phase of derivative degree higher than two not supported
+        @test TFT.φ(sol,3,1) === nothing
         ## frequency 
         @test isapprox(TFT.f(sol,1)[idm], Fr(tm), atol=atol)
         ## rocof
@@ -240,6 +270,8 @@
         ## signal        
         @test isapprox(TFT.signal(sol)[idm], S(tm), atol=atol)
         @test isapprox(TFT.signal(sol,1)[idm], S(tm), atol=atol)
+        ### --- signal of non-present harmonic should be zero
+        @test isapprox(TFT.signal(sol,10)[idm], 0.0, atol=atol)
         ## error 
         @test isapprox(TFT.error(sol)[idm], 0.0, atol=atol)
     end
@@ -256,7 +288,7 @@
         d2Φ(t)  = _FD.derivative(dΦ,t)
 
         # derived input
-        Φr(t)   = rem.(ω .*t .+ Φ.(t) .+ pi, 2 * pi) .- pi
+        Φr(t)   = rem.(ω .* t .+ Φ.(t) .+ pi, 2 * pi) .- pi
         Fr(t)   = F + dΦ(t) / (2 * pi)
         Rr(t)   = d2Φ(t) / (2 * pi)^2
         Ξ(t)    = A.(t) ./ 2 .* exp.(im .* Φ.(t)) .* exp.(im .* ω .* t)
@@ -265,21 +297,29 @@
                   conj.(A.(t) ./ 2 .* exp.(im .* Φ.(t)) .* exp.(im .* ω .* t)))
 
         # perform taylor-fourier transform
-        sol = tft(S.(t), collect(t), [1], D, F, K)
+        sol = tft(S.(t), collect(t), [1,10], D, F, K)
 
         # tests
         ## amplitude
         @test isapprox(TFT.a(sol,0,1)[idm], A(tm), atol=atol)
         @test isapprox(TFT.a(sol,1,1)[idm], dA(tm), atol=atol)
         @test isapprox(TFT.a(sol,2,1)[idm], d2A(tm), atol=atol)
+        ### --- amplitude of derivative degree higher than two not supported
+        @test TFT.a(sol,3,1) === nothing
+        ### --- amplitude of non-present harmonic should be zero
+        @test isapprox(TFT.a(sol,0,10)[idm], 0.0, atol=atol)
         ## phase
         @test isapprox(TFT.ϕ(sol,0,1)[idm], Φr(tm), atol=atol)
         @test isapprox(TFT.ϕ(sol,1,1)[idm], dΦ(tm), atol=atol)
         @test isapprox(TFT.ϕ(sol,2,1)[idm], d2Φ(tm), atol=atol)
+        ### --- phase of derivative degree higher than two not supported
+        @test TFT.ϕ(sol,3,1) === nothing
         ## anti-rotating phase
         @test isapprox(TFT.φ(sol,0,1)[idm], Φ(tm), atol=atol)
         @test isapprox(TFT.φ(sol,1,1)[idm], dΦ(tm), atol=atol)
         @test isapprox(TFT.φ(sol,2,1)[idm], d2Φ(tm), atol=atol)
+        ### --- ar phase of derivative degree higher than two not supported
+        @test TFT.φ(sol,3,1) === nothing
         ## frequency 
         @test isapprox(TFT.f(sol,1)[idm], Fr(tm), atol=atol)
         ## rocof
@@ -293,6 +333,8 @@
         ## signal        
         @test isapprox(TFT.signal(sol)[idm], S(tm), atol=atol)
         @test isapprox(TFT.signal(sol,1)[idm], S(tm), atol=atol)
+        ### --- signal of non-present harmonic should be zero
+        @test isapprox(TFT.signal(sol,10)[idm], 0.0, atol=atol)
         ## error 
         @test isapprox(TFT.error(sol)[idm], 0.0, atol=atol)
     end

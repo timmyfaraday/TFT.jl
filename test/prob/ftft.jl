@@ -296,8 +296,9 @@
         S(t)    = real.(A.(t) ./ 2 .* exp.(im .* Φ.(t)) .* exp.(im .* ω .* t) .+ 
                   conj.(A.(t) ./ 2 .* exp.(im .* Φ.(t)) .* exp.(im .* ω .* t)))
 
-        # perform taylor-fourier transform
-        sol = ftft(S.(t), collect(t), [1,10], D, F, K)
+        # perform taylor-fourier transform -- not passing specific harmonics 
+        # to use the alternative problem_builder function.
+        sol = ftft(S.(t), collect(t), D, F, K)
 
         # tests
         ## amplitude

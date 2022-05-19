@@ -24,3 +24,12 @@ In order to test whether the package works, run:
 ```julia
 (v1.6) pkg> test TFT
 ```
+
+## Acknowledgements
+
+The primary developers are Tom Van Acker - BASF ([@timmyfaraday](https://github.com/timmyfaraday)) 
+and Jose Antonio de la O Serna - UANL ([@jadlos](https://github.com/jadlos)).
+
+## License
+
+This code is provided under a BSD license.

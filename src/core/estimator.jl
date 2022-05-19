@@ -30,18 +30,18 @@ function harmonic_estimator(prob::AbstractDTFTProblem, H::Int)
     # update `Φ` to reflect the samples of up-to-Dth-degree derivative of the 
     # Hth-harmonic bandpass filter
     Y   = Φ .* exp.((2 * pi * im * H) .* rU) ./ prob.N .* 
-            _UF.ustrip(prob.F).^collect(0:prob.D)'
+            (prob.F).^collect(0:prob.D)'
 
     # define the appropriate range in the convolution `rC` using an offset `O`:
     # if (K+1)*N is even    → O = ((K+1)*N) / 2 + 1
     # if (K+1)*N is oneven  → O = ((K+1)*N - 1) / 2 + 1
     # NB: the Julia DSP pkg does not allow for the keyword 'same' in its conv-
-    # function, as is the case in MATLAB, the range `rC` mimics that behavior.
+    # function, as is the case in MATLAB, the range `rC` mimics that behavior
     O   = floor(Int, ((prob.K + 1) * prob.N) / 2) + 1 
     rC  = O:O+length(prob.s)-1
     
-    # return the up-to-Dth-degree derivative of the H-th harmonic complex envelope
-    return _DSP.conv(_UF.ustrip.(prob.s), Y)[rC, :]unit(prob.s[1])  
+    # return the up-to-Dth-degree derivative of the H-th harmonic dynamic phasor
+    return _DSP.conv(prob.s, Y)[rC, :] 
 end
 
 """
@@ -73,7 +73,9 @@ function FTFT(prob::AbstractDTFTProblem)
         # determine the selected range of the signal with 'center' ni
         rS  = (ni-Δs):(ni+Δs-1) 
         # determine the Hadamar product of the osplines and the selected signal
-        hd  = Φ .* prob.s[rS]
+        ## @Antonio: tests shows that a multiplication with the frequency is necessary -> fixed with addition of .* _UF.ustrip(prob.F).^collect(0:prob.D)
+        ## @Antonio: tests shows that there is an sign issue! -> proposed solution (-F)^d
+        hd  = Φ .* prob.s[rS] .* (-prob.F).^collect(0:prob.D)'
         # sum the Hadamar product over o-spline degrees
         shd = [sum(hd[nh:prob.N:end, :], dims=1) for nh in 1:prob.N]
         # perform the fft and store the result at ni

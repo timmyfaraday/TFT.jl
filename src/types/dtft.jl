@@ -1,5 +1,5 @@
 ################################################################################
-#  Copyright 2022, Tom Van Acker (BASF Antwerp)                                #
+#  Copyright 2022, Tom Van Acker (BASF)                                        #
 ################################################################################
 # TFT.jl                                                                       #
 # A Julia package for Taylor-Fourier Transform.                                #
@@ -51,7 +51,7 @@ struct DTFTProblem <: AbstractDTFTProblem
         new(s, t, h, D, F, K, N)
 end
 
-# problem builder -- ftft
+# problem builder
 function build_problem(s, t, D, F, K)
     # checks
     length(s) == length(t)          || error("the length of the discrete signal and time are inconsistent")
@@ -69,11 +69,8 @@ function build_problem(s, t, D, F, K)
     # find the harmonics set based on the number of samples in a fundamental cycle
     h   = collect(0:N-2)
 
-    # NB: the frequency is set to either `Hz` or unitless.
-    return DTFTProblem(s, rT, h, D, upreferred(F), K, N)
+    return DTFTProblem(s, rT, h, D, F, K, N)
 end
-
-# problem builder -- tft
 function build_problem(s, t, h, D, F, K)
     # checks
     length(s) == length(t)          || error("the length of the discrete signal and time are inconsistent")
@@ -88,8 +85,7 @@ function build_problem(s, t, h, D, F, K)
     # find the number of samples in a fundamental cycle [-]
     N   = findfirst(x -> x ≈ first(t) + T, t) - 1
 
-    # NB: the frequency is set to either `Hz` or unitless.
-    return DTFTProblem(s, rT, h, D, upreferred(F), K, N)
+    return DTFTProblem(s, rT, h, D, F, K, N)
 end
     
 # solution types

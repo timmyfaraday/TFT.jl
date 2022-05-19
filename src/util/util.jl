@@ -1,5 +1,5 @@
 ################################################################################
-#  Copyright 2022, Tom Van Acker (BASF Antwerp)                                #
+#  Copyright 2022, Tom Van Acker (BASF)                                        #
 ################################################################################
 # TFT.jl                                                                       #
 # A Julia package for Taylor-Fourier Transform.                                #
@@ -173,7 +173,7 @@ Output:
 - `f::Vector{<:Real}`           | frequency fₕ(t) [Hz]
 """
 frequency(sol::AbstractDTFTSolution, H::Int=1) = 
-    F(sol,H) .+ (ϕ(sol,1,H) ./ (2 * pi))unit(F(sol))
+    F(sol,H) .+ (ϕ(sol,1,H) ./ (2 * pi))
 
 # rocof
 """
@@ -204,7 +204,7 @@ Output:
 - `r::Vector{<:Real}`           | rocof rₕ(t) [Hz²]
 """
 rocof(sol::AbstractDTFTSolution, H::Int=1) = 
-    (ϕ(sol,2,H) ./ (2 * pi)^2)unit(F(sol))^2
+    ϕ(sol,2,H) ./ (2 * pi)^2
 
 # dynamic phasor
 """

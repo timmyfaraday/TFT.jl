@@ -1,5 +1,5 @@
 ################################################################################
-#  Copyright 2022, Tom Van Acker (BASF Antwerp)                                #
+#  Copyright 2022, Tom Van Acker (BASF)                                        #
 ################################################################################
 # TFT.jl                                                                       #
 # A Julia package for Taylor-Fourier Transform.                                #
@@ -12,28 +12,24 @@ module TFT
     import DSP
     import Polynomials
     import FFTW
-    
-    # using pkg 
-    using Unitful
 
     # pkg constants 
     const _DSP  = DSP
     const _POL  = Polynomials
-    const _UF   = Unitful
     const _FFTW = FFTW 
 
     # include
-    include("prob/dtft.jl")
+    include("types/dtft.jl")
 
     include("core/estimator.jl")
     include("core/ospline.jl")
-    include("core/tft.jl")
+
+    include("prob/tft.jl")
+    include("prob/ftft.jl")
 
     include("util/util.jl")
 
     # export
-    export  DTFTProblem, DTFTSolution
-
     export  tft, ftft
 
     export  amplitude, phase, ar_phase, frequency, rocof, phasor, ar_phasor, 
